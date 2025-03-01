@@ -17,7 +17,7 @@ export const SearchBar = ({
       />
       <button 
         type="submit"
-        className={`w-full rounded text-white px-4 py-2 mt-2 ${
+        className={`w-full hidden rounded text-white px-4 py-2 mt-2 ${
           isLoading 
             ? 'bg-gray-400 cursor-not-allowed' 
             : 'bg-blue-500 hover:bg-blue-600'

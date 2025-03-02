@@ -34,10 +34,10 @@ export const PresenceTable = ({ data }) => {
         <table className="w-full border-collapse border border-gray-300">
           <thead className="bg-gray-100">
             <tr>
-              <th className="border border-gray-300 p-2">Nama Tentor</th>
-              <th className="border border-gray-300 p-2">Nama Siswa</th>
-              <th className="border border-gray-300 p-2">Hari dan Tanggal Les</th>
-              <th className="border border-gray-300 p-2">Jam Kegiatan Les</th>
+              <th className="border border-gray-300 p-2">Tutor</th>
+              <th className="border border-gray-300 p-2">Student</th>
+              <th className="border border-gray-300 p-2">Date</th>
+              <th className="border border-gray-300 p-2">Time</th>
               <th className="border border-gray-300 p-2">Timestamp</th>
             </tr>
           </thead>

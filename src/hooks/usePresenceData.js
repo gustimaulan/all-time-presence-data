@@ -3,8 +3,8 @@ import axios from 'axios'
 import { parseDate } from '../utils/dateUtils'
 
 const BASE_URL = "https://presensi.sigmath.net/api"
-const CACHE_TIME = 1000 * 60 * 5 // 5 minutes
-const STALE_TIME = 1000 * 60 * 1 // 1 minute
+const CACHE_TIME = 1000 * 60 * 30 // 30 minutes
+const STALE_TIME = 1000 * 60 * 5  // 5 minutes
 
 export const usePresenceData = () => {
   const queryClient = useQueryClient()
@@ -30,24 +30,16 @@ export const usePresenceData = () => {
   const query = useQuery({
     queryKey: ['presence-data'],
     queryFn: fetchData,
-    staleTime: STALE_TIME, // Data becomes stale after 1 minute
-    cacheTime: CACHE_TIME, // Cache is kept for 5 minutes
-    refetchOnWindowFocus: true, // Refetch when window regains focus
-    refetchOnReconnect: true, // Refetch when internet reconnects
-    retry: 3, // Retry failed requests 3 times
-  })
-
-  // Prefetch the next data refresh
-  queryClient.prefetchQuery({
-    queryKey: ['presence-data'],
-    queryFn: fetchData,
     staleTime: STALE_TIME,
+    cacheTime: CACHE_TIME,
+    refetchOnWindowFocus: false, // Only refetch manually or when stale
+    refetchOnReconnect: true,
+    retry: 2,
   })
 
   const manualRefresh = async () => {
     try {
       await refreshData()
-      // Invalidate and refetch
       await queryClient.invalidateQueries({ queryKey: ['presence-data'] })
     } catch (error) {
       console.error('Manual refresh failed:', error)

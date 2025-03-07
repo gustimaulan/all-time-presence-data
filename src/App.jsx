@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react'
 import { Header } from './components/Header'
 import { SearchBar } from './components/SearchBar'
 import { PresenceTable } from './components/PresenceTable'
-import { LoadingSpinner } from './components/LoadingSpinner'
+import { SkeletonLoader } from './components/SkeletonLoader'
 import { usePresenceData } from './hooks/usePresenceData'
 
 function App() {
@@ -42,7 +42,7 @@ function App() {
   }
 
   if (isLoading) {
-    return <LoadingSpinner />
+    return <SkeletonLoader />
   }
 
   if (isError) {

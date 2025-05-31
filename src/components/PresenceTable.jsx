@@ -1,31 +1,19 @@
 import PropTypes from 'prop-types'
-import { useState, useMemo, useEffect } from 'react'
 import { Pagination } from './Pagination'
 
-const ITEMS_PER_PAGE = 15
-
-export const PresenceTable = ({ data }) => {
-  const [currentPage, setCurrentPage] = useState(1)
-  
-  // Reset to first page when data changes (e.g., after search)
-  useEffect(() => {
-    setCurrentPage(1)
-  }, [data])
-
-  const totalPages = useMemo(() => Math.max(Math.ceil(data.length / ITEMS_PER_PAGE), 1), [data.length])
-  
-  const currentData = useMemo(() => {
-    const start = (currentPage - 1) * ITEMS_PER_PAGE
-    const end = start + ITEMS_PER_PAGE
-    return data.slice(start, end)
-  }, [data, currentPage])
-
-  const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= totalPages) {
-      setCurrentPage(newPage)
-      // Scroll to top of table
-      document.getElementById('tableTop')?.scrollIntoView({ behavior: 'smooth' })
+export const PresenceTable = ({ 
+  data, 
+  isLoading, 
+  pagination, 
+  onPageChange,
+  currentPage,
+  searchQuery 
+}) => {
+  const getEmptyMessage = () => {
+    if (searchQuery && searchQuery.trim()) {
+      return `No results found for "${searchQuery}". Try adjusting your search terms.`
     }
+    return "No data available. Try refreshing or changing the year filter."
   }
 
   return (
@@ -42,8 +30,28 @@ export const PresenceTable = ({ data }) => {
             </tr>
           </thead>
           <tbody className="bg-white">
-            {currentData.length > 0 ? (
-              currentData.map((item, index) => (
+            {isLoading ? (
+              [...Array(10)].map((_, index) => (
+                <tr key={index}>
+                  <td className="border border-gray-300 p-2">
+                    <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+                  </td>
+                  <td className="border border-gray-300 p-2">
+                    <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+                  </td>
+                  <td className="border border-gray-300 p-2">
+                    <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+                  </td>
+                  <td className="border border-gray-300 p-2">
+                    <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+                  </td>
+                  <td className="border border-gray-300 p-2">
+                    <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+                  </td>
+                </tr>
+              ))
+            ) : data.length > 0 ? (
+              data.map((item, index) => (
                 <tr key={`${item["Timestamp"]}-${index}`}>
                   <td className="border border-gray-300 p-2">{item["Nama Tentor"]}</td>
                   <td className="border border-gray-300 p-2">{item["Nama Siswa"]}</td>
@@ -54,8 +62,15 @@ export const PresenceTable = ({ data }) => {
               ))
             ) : (
               <tr>
-                <td colSpan="5" className="text-center py-4 text-gray-500">
-                  No results found
+                <td colSpan="5" className="text-center py-8 text-gray-500">
+                  <div>
+                    <p className="mb-2">{getEmptyMessage()}</p>
+                    {searchQuery && (
+                      <p className="text-sm text-gray-400">
+                        Search is performed across tutor names, student names, dates, times, and timestamps.
+                      </p>
+                    )}
+                  </div>
                 </td>
               </tr>
             )}
@@ -63,12 +78,15 @@ export const PresenceTable = ({ data }) => {
         </table>
       </div>
       
-      {data.length > ITEMS_PER_PAGE && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
+      {/* Show pagination if we have more than one page */}
+      {pagination && pagination.totalPages > 1 && (
+        <div className="mt-4">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={pagination.totalPages}
+            onPageChange={onPageChange}
+          />
+        </div>
       )}
     </div>
   )
@@ -81,5 +99,16 @@ PresenceTable.propTypes = {
     "Hari dan Tanggal Les": PropTypes.string,
     "Jam Kegiatan Les": PropTypes.string,
     "Timestamp": PropTypes.string
-  })).isRequired
+  })).isRequired,
+  isLoading: PropTypes.bool,
+  pagination: PropTypes.shape({
+    currentPage: PropTypes.number,
+    totalPages: PropTypes.number,
+    totalItems: PropTypes.number,
+    hasNextPage: PropTypes.bool,
+    hasPreviousPage: PropTypes.bool
+  }),
+  onPageChange: PropTypes.func.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  searchQuery: PropTypes.string
 }

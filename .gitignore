@@ -4,3 +4,4 @@ _redirects
 .env
 architecture.md
 *.toml
+dist

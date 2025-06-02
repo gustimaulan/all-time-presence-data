@@ -18,7 +18,7 @@ function AppContent() {
   const { addToast } = useToast()
   
   // Debounce the search query
-  const debouncedSearchQuery = useDebounce(searchQuery, 500)
+  const debouncedSearchQuery = useDebounce(searchQuery, 1000)
   
   const { 
     data, 

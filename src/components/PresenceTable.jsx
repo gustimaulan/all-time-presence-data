@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types'
 import { Pagination } from './Pagination'
+import { formatTimeToHHMM } from '../utils/dateUtils'
 
-export const PresenceTable = ({ 
-  data, 
-  isLoading, 
-  pagination, 
+export const PresenceTable = ({
+  data,
+  isLoading,
+  pagination,
   onPageChange,
   currentPage,
-  searchQuery 
+  searchQuery
 }) => {
   const getEmptyMessage = () => {
     if (searchQuery && searchQuery.trim()) {
@@ -56,7 +57,7 @@ export const PresenceTable = ({
                   <td className="border border-gray-300 p-2">{item["Nama Tentor"]}</td>
                   <td className="border border-gray-300 p-2">{item["Nama Siswa"]}</td>
                   <td className="border border-gray-300 p-2">{item["Hari dan Tanggal Les"]}</td>
-                  <td className="border border-gray-300 p-2">{item["Jam Kegiatan Les"]}</td>
+                  <td className="border border-gray-300 p-2">{formatTimeToHHMM(item["Jam Kegiatan Les"])}</td>
                   <td className="border border-gray-300 p-2">{item["Timestamp"]}</td>
                 </tr>
               ))

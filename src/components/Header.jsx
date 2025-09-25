@@ -6,7 +6,7 @@ export const Header = ({
   handleRefresh, 
   selectedYear, 
   searchQuery 
-}) => {
+}) => {  
   return (
     <div className="flex justify-between items-center bg-white p-4 shadow-md">
       <div className="flex items-center space-x-3">

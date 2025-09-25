@@ -4,21 +4,19 @@ import { StatusBar } from './components/StatusBar'
 import { SearchBar } from './components/SearchBar'
 import { YearFilter } from './components/YearFilter'
 import { PresenceTable } from './components/PresenceTable'
-import { SkeletonLoader } from './components/SkeletonLoader'
 import { usePresenceData } from './hooks/usePresenceData'
 import { ToastProvider, useToast } from './context/ToastContext'
 import { useDebounce } from './hooks/useDebounce'
 
-function AppContent() {
+function App() {
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedYear, setSelectedYear] = useState('2025')
+  const [activeSearchQuery, setActiveSearchQuery] = useState('') // This will trigger the API call
+  const [selectedYear, setSelectedYear] = useState('') // Year selected in filter, but not yet applied
+  const [activeSelectedYear, setActiveSelectedYear] = useState('') // Year actually applied to API call
   const [currentPage, setCurrentPage] = useState(1)
   const [isRefreshing, setIsRefreshing] = useState(false)
   
   const { addToast } = useToast()
-  
-  // Debounce the search query
-  const debouncedSearchQuery = useDebounce(searchQuery, 1000)
   
   const { 
     data, 
@@ -29,20 +27,26 @@ function AppContent() {
     isError,
     error, 
     manualRefresh
-  } = usePresenceData(selectedYear, currentPage, 50, debouncedSearchQuery)
+  } = usePresenceData(activeSelectedYear, currentPage, 15, activeSearchQuery)
 
-  // Reset to first page when search query or year changes
+  // Determine if it's the very first loading state before any data is fetched
+  const isInitialLoading = !data && !isError && (activeSelectedYear === '' && activeSearchQuery === '');
+
+  // Reset to first page when active search query or active year changes
   useEffect(() => {
     setCurrentPage(1)
-  }, [debouncedSearchQuery, selectedYear])
+  }, [activeSearchQuery, activeSelectedYear])
 
   const handleSearch = useCallback((e) => {
     e.preventDefault()
-  }, [])
+    // When form is submitted, immediately set activeSearchQuery and activeSelectedYear
+    setActiveSearchQuery(searchQuery)
+    setActiveSelectedYear(selectedYear)
+  }, [searchQuery, selectedYear])
 
   const handleYearChange = useCallback((year) => {
     setSelectedYear(year)
-    setSearchQuery('')
+    // Do NOT trigger API call here. It will be triggered by handleSearch.
   }, [])
 
   const handleRefresh = async () => {
@@ -61,10 +65,6 @@ function AppContent() {
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage)
     document.getElementById('tableTop')?.scrollIntoView({ behavior: 'smooth' })
-  }
-
-  if (isLoading) {
-    return <SkeletonLoader />
   }
 
   if (isError) {
@@ -90,8 +90,8 @@ function AppContent() {
         <Header 
           isFetching={isFetching || isRefreshing} 
           handleRefresh={handleRefresh}
-          selectedYear={selectedYear}
-          searchQuery={debouncedSearchQuery}
+          selectedYear={activeSelectedYear}
+          searchQuery={activeSearchQuery}
         />
 
         {/* StatusBar temporarily hidden */}
@@ -100,8 +100,8 @@ function AppContent() {
             totalItems={pagination?.totalItems}
             filteredItems={data?.length}
             cached={cached}
-            selectedYear={selectedYear}
-            searchQuery={debouncedSearchQuery}
+            selectedYear={activeSelectedYear}
+            searchQuery={activeSearchQuery}
             pagination={pagination}
           />
         )} */}
@@ -119,18 +119,31 @@ function AppContent() {
             isLoading={isFetching || isRefreshing}
           />
 
-          {/* Search Results Summary */}
-          {debouncedSearchQuery && (
+          {/* Initial State / No Search Yet */}
+          {isInitialLoading && (
+            <div className="text-center py-10 px-4 text-gray-500">
+              <h2 className="text-lg font-semibold mb-2">Welcome!</h2>
+              <p>Please select a year or use the search bar to find attendance data.</p>
+            </div>
+          )}
+
+          {/* Search Results Summary (only show if a search or filter is active) */}
+          {(activeSearchQuery || activeSelectedYear) && !isInitialLoading && (
             <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                  <span className="text-blue-800 font-medium">Search Results</span>
+                  <span className="text-blue-800 font-medium">
+                    {activeSearchQuery ? 'Search Results' : `Data for ${activeSelectedYear}`}
+                  </span>
                   {isFetching && (
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
                   )}
                 </div>
                 <div className="text-blue-700 text-sm">
-                  {pagination ? (
+                  {isFetching ? (
+                    'Loading...'
+                  ) :
+                  pagination ? (
                     <>
                       {pagination.totalItems} results found
                       {pagination.totalPages > 1 && (
@@ -145,34 +158,37 @@ function AppContent() {
                 </div>
               </div>
               
-              {!isFetching && data?.length === 0 && (
+              {!isFetching && data?.length === 0 && activeSearchQuery && (
                 <div className="mt-2 text-blue-700 text-sm">
-                  No matches found for "{debouncedSearchQuery}". Try different keywords or check your spelling.
+                  No matches found for "{activeSearchQuery}". Try different keywords or check your spelling.
                 </div>
               )}
             </div>
           )}
 
-          <PresenceTable 
-            data={data} 
-            isLoading={isFetching}
-            pagination={pagination}
-            onPageChange={handlePageChange}
-            currentPage={currentPage}
-            searchQuery={debouncedSearchQuery}
-          />
+          {/* Only render table if it's not the initial state */}
+          {!isInitialLoading && (
+            <PresenceTable 
+              data={data} 
+              isLoading={isFetching}
+              pagination={pagination}
+              onPageChange={handlePageChange}
+              currentPage={currentPage}
+              searchQuery={activeSearchQuery}
+            />
+          )}
         </div>
       </div>
     </div>
   )
 }
 
-function App() {
+function AppWrapper() {
   return (
     <ToastProvider>
-      <AppContent />
+      <App />
     </ToastProvider>
   )
 }
 
-export default App
+export default AppWrapper

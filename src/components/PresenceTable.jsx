@@ -13,7 +13,7 @@ export const PresenceTable = ({
     if (searchQuery && searchQuery.trim()) {
       return `No results found for "${searchQuery}". Try adjusting your search terms.`
     }
-    return "No data available. Try refreshing or changing the year filter."
+    return "Type in the search box above to view your data."
   }
 
   return (

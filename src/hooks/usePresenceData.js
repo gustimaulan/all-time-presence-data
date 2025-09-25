@@ -1,8 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import axios from 'axios'
+import api from '../axios'
 
-// Backend API configuration
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api"
 const CACHE_TIME = 1000 * 60 * 30 // 30 minutes
 const STALE_TIME = 1000 * 60 * 5  // 5 minutes
 
@@ -16,7 +14,7 @@ class APIError extends Error {
 }
 
 const handleError = (error) => {
-  if (axios.isAxiosError(error)) {
+  if (error.response) {
     const message = error.response?.data?.message || error.message
     throw new APIError(message, error.response?.status, error.response?.data)
   }
@@ -35,7 +33,7 @@ export const usePresenceData = (year = null, page = 1, pageSize = 50, searchQuer
         search: searchQuery && searchQuery.trim() !== '' ? searchQuery.trim() : undefined
       }
 
-      const { data } = await axios.get(`${BASE_URL}/data`, { params })
+      const { data } = await api.get('/data', { params })
       
       return {
         items: data.data || [],
@@ -50,6 +48,10 @@ export const usePresenceData = (year = null, page = 1, pageSize = 50, searchQuer
   const query = useQuery({
     queryKey: ['presence-data', year, page, pageSize, searchQuery],
     queryFn: fetchData,
+    // Only run query if user is authenticated AND
+    // either a search query is present or a year is selected.
+    // This prevents fetching on initial load.
+    enabled: searchQuery.trim() !== '' || (!!year && year !== ''),
     staleTime: STALE_TIME,
     cacheTime: CACHE_TIME,
     refetchOnWindowFocus: false,

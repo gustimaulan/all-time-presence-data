@@ -57,7 +57,7 @@ export const PresenceTable = ({
                   <td className="border border-gray-300 p-2">{item["Nama Tentor"]}</td>
                   <td className="border border-gray-300 p-2">{item["Nama Siswa"]}</td>
                   <td className="border border-gray-300 p-2">{item["Hari dan Tanggal Les"]}</td>
-                  <td className="border border-gray-300 p-2">{formatTimeToHHMM(item["Jam Kegiatan Les"])}</td>
+                  <td className="border border-gray-300 p-2">{formatTimeToHHMM(String(item["Jam Kegiatan Les"]))}</td>
                   <td className="border border-gray-300 p-2">{item["Timestamp"]}</td>
                 </tr>
               ))

@@ -21,20 +21,28 @@ const handleError = (error) => {
   throw error
 }
 
-export const usePresenceData = (year = null, page = 1, pageSize = 50, searchQuery = '') => {
+export const usePresenceData = (year = null, page = 1, pageSize = 15, searchQuery = '') => {
   const queryClient = useQueryClient()
 
   const fetchData = async () => {
     try {
-      const params = { 
-        page, 
-        pageSize,
-        year: year && year !== '' ? year : undefined,
-        search: searchQuery && searchQuery.trim() !== '' ? searchQuery.trim() : undefined
-      }
+            let search
+            if (searchQuery && searchQuery.trim() !== '') {
+              try {
+                search = JSON.parse(searchQuery.trim())
+              } catch (e) {
+                search = { teacher: searchQuery.trim() }
+              }
+            }
 
-      const { data } = await api.get('/data', { params })
+            const requestBody = {
+              page,
+              pageSize,
+              year: year && year !== '' ? year : undefined,
+              search
+            }
       
+            const { data } = await api.post('/data/query', requestBody)      
       return {
         items: data.data || [],
         pagination: data.pagination || null,

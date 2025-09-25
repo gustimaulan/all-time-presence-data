@@ -11,7 +11,7 @@ import { useDebounce } from './hooks/useDebounce'
 function App() {
   const [searchQuery, setSearchQuery] = useState('')
   const [activeSearchQuery, setActiveSearchQuery] = useState('') // This will trigger the API call
-  const [selectedYear, setSelectedYear] = useState('') // Year selected in filter, but not yet applied
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear().toString()) // Year selected in filter, but not yet applied
   const [activeSelectedYear, setActiveSelectedYear] = useState('') // Year actually applied to API call
   const [currentPage, setCurrentPage] = useState(1)
   const [isRefreshing, setIsRefreshing] = useState(false)

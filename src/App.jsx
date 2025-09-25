@@ -154,7 +154,7 @@ function App() {
                     </>
                   ) : (
                     data?.length || 0
-                  )} results
+                  )}
                 </div>
               </div>
               

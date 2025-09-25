@@ -40,7 +40,7 @@ export const SearchBar = ({
         <button
           type="submit"
           className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-          disabled={isLoading}
+          disabled={isLoading || !searchQuery.trim()}
         >
           {isLoading ? (
             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>

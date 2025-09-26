@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Pagination } from './Pagination'
 import { formatTimeToHHMM } from '../utils/dateUtils'
 import { FaUser } from 'react-icons/fa'
@@ -12,7 +12,8 @@ export const PresenceTable = ({
   currentPage,
   searchQuery
 }) => {
-  const [isGroupedByTutor, setIsGroupedByTutor] = useState(true)
+  const [isGroupedByTutor, setIsGroupedByTutor] = useState(false)
+  const [isGroupedByStudent, setIsGroupedByStudent] = useState(false)
 
   const getEmptyMessage = () => {
     if (searchQuery && searchQuery.trim()) {
@@ -21,7 +22,7 @@ export const PresenceTable = ({
     return "Type in the search box above to view your data."
   }
 
-  const groupedData = isGroupedByTutor
+  const groupedByTutorData = isGroupedByTutor
     ? data.reduce((acc, item) => {
         const tutorName = item["Nama Tentor"]
         if (!acc[tutorName]) {
@@ -31,6 +32,20 @@ export const PresenceTable = ({
         return acc
       }, {})
     : null
+
+  const finalGroupedData = isGroupedByTutor && isGroupedByStudent
+    ? Object.entries(groupedByTutorData).reduce((acc, [tutorName, sessions]) => {
+        acc[tutorName] = sessions.reduce((studentAcc, session) => {
+          const studentName = session["Nama Siswa"]
+          if (!studentAcc[studentName]) {
+            studentAcc[studentName] = []
+          }
+          studentAcc[studentName].push(session)
+          return studentAcc
+        }, {})
+        return acc
+      }, {})
+    : groupedByTutorData
 
   return (
     <div className="mt-4">
@@ -46,6 +61,21 @@ export const PresenceTable = ({
           Group by Tutor
         </label>
       </div>
+      {data.length > 0 && (
+        <div className="flex items-center justify-end mb-4">
+          <input
+            type="checkbox"
+            id="groupByStudent"
+            checked={isGroupedByStudent}
+            onChange={(e) => setIsGroupedByStudent(e.target.checked)}
+            className="mr-2"
+            disabled={!isGroupedByTutor}
+          />
+          <label htmlFor="groupByStudent" className="text-sm font-medium text-gray-700">
+            Group by Student
+          </label>
+        </div>
+      )}
       <div id="tableTop" className="overflow-x-auto">
         <table className="w-full border-collapse border border-gray-300">
           <thead className="bg-gray-100">
@@ -80,23 +110,44 @@ export const PresenceTable = ({
               ))
             ) : data.length > 0 ? (
               isGroupedByTutor ? (
-                Object.entries(groupedData).map(([tutorName, sessions]) => (
-                  <>
-                    <tr key={tutorName} className="bg-gray-200">
+                Object.entries(finalGroupedData).map(([tutorName, tutorGroup]) => (
+                  <React.Fragment key={tutorName}>
+                    <tr className="bg-gray-200">
                       <td colSpan="5" className="border border-gray-300 p-2 font-bold text-blue-500">
                         <i className="fas fa-user mr-2"></i>{tutorName}
                       </td>
                     </tr>
-                    {sessions.map((item, index) => (
-                      <tr key={`${item["Timestamp"]}-${index}`}>
-                        <td className="border border-gray-300 p-2"></td> {/* Empty for grouped view */}
-                        <td className="border border-gray-300 p-2">{item["Nama Siswa"]}</td>
-                        <td className="border border-gray-300 p-2">{item["Hari dan Tanggal Les"]}</td>
-                        <td className="border border-gray-300 p-2">{formatTimeToHHMM(String(item["Jam Kegiatan Les"]))}</td>
-                        <td className="border border-gray-300 p-2">{item["Timestamp"]}</td>
-                      </tr>
-                    ))}
-                  </>
+                    {isGroupedByStudent ? (
+                      Object.entries(tutorGroup).map(([studentName, studentSessions]) => (
+                        <React.Fragment key={`${tutorName}-${studentName}`}>
+                          <tr className="bg-gray-100">
+                            <td colSpan="5" className="border border-gray-300 p-2 font-semibold text-gray-700 pl-8">
+                              <FaUser className="inline-block mr-2" />{studentName}
+                            </td>
+                          </tr>
+                          {studentSessions.map((item, index) => (
+                            <tr key={`${item["Timestamp"]}-${index}`}>
+                              <td className="border border-gray-300 p-2"></td> {/* Empty for grouped view */}
+                              <td className="border border-gray-300 p-2 pl-12">{item["Nama Siswa"]}</td>
+                              <td className="border border-gray-300 p-2">{item["Hari dan Tanggal Les"]}</td>
+                              <td className="border border-gray-300 p-2">{formatTimeToHHMM(String(item["Jam Kegiatan Les"]))}</td>
+                              <td className="border border-gray-300 p-2">{item["Timestamp"]}</td>
+                            </tr>
+                          ))}
+                        </React.Fragment>
+                      ))
+                    ) : (
+                      tutorGroup.map((item, index) => (
+                        <tr key={`${item["Timestamp"]}-${index}`}>
+                          <td className="border border-gray-300 p-2"></td> {/* Empty for grouped view */}
+                          <td className="border border-gray-300 p-2">{item["Nama Siswa"]}</td>
+                          <td className="border border-gray-300 p-2">{item["Hari dan Tanggal Les"]}</td>
+                          <td className="border border-gray-300 p-2">{formatTimeToHHMM(String(item["Jam Kegiatan Les"]))}</td>
+                          <td className="border border-gray-300 p-2">{item["Timestamp"]}</td>
+                        </tr>
+                      ))
+                    )}
+                  </React.Fragment>
                 ))
               ) : (
                 data.map((item, index) => (

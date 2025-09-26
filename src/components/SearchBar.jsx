@@ -23,7 +23,7 @@ export const SearchBar = ({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="border rounded p-2 w-full pl-10 pr-10 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-            placeholder="Search by name, date, time..."
+            placeholder="Search by Tutor, Student..."
           />
           {searchQuery && (
             <button

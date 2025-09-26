@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types'
+import { useState } from 'react'
 import { Pagination } from './Pagination'
 import { formatTimeToHHMM } from '../utils/dateUtils'
+import { FaUser } from 'react-icons/fa'
 
 export const PresenceTable = ({
   data,
@@ -10,6 +12,8 @@ export const PresenceTable = ({
   currentPage,
   searchQuery
 }) => {
+  const [isGroupedByTutor, setIsGroupedByTutor] = useState(true)
+
   const getEmptyMessage = () => {
     if (searchQuery && searchQuery.trim()) {
       return `No results found for "${searchQuery}". Try adjusting your search terms.`
@@ -17,8 +21,31 @@ export const PresenceTable = ({
     return "Type in the search box above to view your data."
   }
 
+  const groupedData = isGroupedByTutor
+    ? data.reduce((acc, item) => {
+        const tutorName = item["Nama Tentor"]
+        if (!acc[tutorName]) {
+          acc[tutorName] = []
+        }
+        acc[tutorName].push(item)
+        return acc
+      }, {})
+    : null
+
   return (
     <div className="mt-4">
+      <div className="flex items-center justify-end mb-4">
+        <input
+          type="checkbox"
+          id="groupByTutor"
+          checked={isGroupedByTutor}
+          onChange={(e) => setIsGroupedByTutor(e.target.checked)}
+          className="mr-2"
+        />
+        <label htmlFor="groupByTutor" className="text-sm font-medium text-gray-700">
+          Group by Tutor
+        </label>
+      </div>
       <div id="tableTop" className="overflow-x-auto">
         <table className="w-full border-collapse border border-gray-300">
           <thead className="bg-gray-100">
@@ -52,15 +79,36 @@ export const PresenceTable = ({
                 </tr>
               ))
             ) : data.length > 0 ? (
-              data.map((item, index) => (
-                <tr key={`${item["Timestamp"]}-${index}`}>
-                  <td className="border border-gray-300 p-2">{item["Nama Tentor"]}</td>
-                  <td className="border border-gray-300 p-2">{item["Nama Siswa"]}</td>
-                  <td className="border border-gray-300 p-2">{item["Hari dan Tanggal Les"]}</td>
-                  <td className="border border-gray-300 p-2">{formatTimeToHHMM(String(item["Jam Kegiatan Les"]))}</td>
-                  <td className="border border-gray-300 p-2">{item["Timestamp"]}</td>
-                </tr>
-              ))
+              isGroupedByTutor ? (
+                Object.entries(groupedData).map(([tutorName, sessions]) => (
+                  <>
+                    <tr key={tutorName} className="bg-gray-200">
+                      <td colSpan="5" className="border border-gray-300 p-2 font-bold text-blue-500">
+                        <i className="fas fa-user mr-2"></i>{tutorName}
+                      </td>
+                    </tr>
+                    {sessions.map((item, index) => (
+                      <tr key={`${item["Timestamp"]}-${index}`}>
+                        <td className="border border-gray-300 p-2"></td> {/* Empty for grouped view */}
+                        <td className="border border-gray-300 p-2">{item["Nama Siswa"]}</td>
+                        <td className="border border-gray-300 p-2">{item["Hari dan Tanggal Les"]}</td>
+                        <td className="border border-gray-300 p-2">{formatTimeToHHMM(String(item["Jam Kegiatan Les"]))}</td>
+                        <td className="border border-gray-300 p-2">{item["Timestamp"]}</td>
+                      </tr>
+                    ))}
+                  </>
+                ))
+              ) : (
+                data.map((item, index) => (
+                  <tr key={`${item["Timestamp"]}-${index}`}>
+                    <td className="border border-gray-300 p-2">{item["Nama Tentor"]}</td>
+                    <td className="border border-gray-300 p-2">{item["Nama Siswa"]}</td>
+                    <td className="border border-gray-300 p-2">{item["Hari dan Tanggal Les"]}</td>
+                    <td className="border border-gray-300 p-2">{formatTimeToHHMM(String(item["Jam Kegiatan Les"]))}</td>
+                    <td className="border border-gray-300 p-2">{item["Timestamp"]}</td>
+                  </tr>
+                ))
+              )
             ) : (
               <tr>
                 <td colSpan="5" className="text-center py-8 text-gray-500">

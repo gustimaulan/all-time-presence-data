@@ -126,7 +126,7 @@ export const PresenceTable = ({
                             </td>
                           </tr>
                           {studentSessions.map((item, index) => (
-                            <tr key={`${item["Timestamp"]}-${index}`} className="dark:hover:bg-slate-700">
+                            <tr key={`${item["Timestamp"]}-${index}`}>
                               <td className="border border-gray-300 p-2 dark:border-slate-700"></td> {/* Empty for grouped view */}
                               <td className="border border-gray-300 p-2 pl-12 dark:border-slate-700">{item["Nama Siswa"]}</td>
                               <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Hari dan Tanggal Les"]}</td>
@@ -138,7 +138,7 @@ export const PresenceTable = ({
                       ))
                     ) : (
                       tutorGroup.map((item, index) => (
-                        <tr key={`${item["Timestamp"]}-${index}`} className="dark:hover:bg-slate-700">
+                        <tr key={`${item["Timestamp"]}-${index}`}>
                           <td className="border border-gray-300 p-2 dark:border-slate-700"></td> {/* Empty for grouped view */}
                           <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Nama Siswa"]}</td>
                           <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Hari dan Tanggal Les"]}</td>
@@ -151,7 +151,7 @@ export const PresenceTable = ({
                 ))
               ) : (
                 data.map((item, index) => (
-                  <tr key={`${item["Timestamp"]}-${index}`} className="dark:hover:bg-slate-700">
+                  <tr key={`${item["Timestamp"]}-${index}`}>
                     <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Nama Tentor"]}</td>
                     <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Nama Siswa"]}</td>
                     <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Hari dan Tanggal Les"]}</td>

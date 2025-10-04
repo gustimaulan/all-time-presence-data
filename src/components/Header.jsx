@@ -11,7 +11,7 @@ export const Header = ({
   const { theme, toggleTheme } = useTheme()
 
   return (
-    <div className="flex justify-between items-center bg-white p-4 dark:bg-slate-800 dark:text-slate-50">
+    <div className="flex justify-between items-center bg-white p-4 dark:bg-slate-800 dark:text-slate-50 border-b border-gray-200 dark:border-slate-700">
       <div className="flex items-center space-x-3">
         <h1 className="text-lg font-semibold">All Time Presence Data</h1>
 

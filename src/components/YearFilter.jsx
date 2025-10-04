@@ -17,7 +17,7 @@ export const YearFilter = ({ selectedYear, onYearChange }) => {
 
   return (
     <div className="mb-4">
-      <label htmlFor="yearFilter" className="block text-sm font-medium text-gray-700 mb-2">
+      <label htmlFor="yearFilter" className="block text-sm font-medium text-gray-700 mb-2 dark:text-slate-300">
         Filter by Year
       </label>
       <div className="flex items-center">
@@ -25,7 +25,7 @@ export const YearFilter = ({ selectedYear, onYearChange }) => {
           id="yearFilter"
           value={selectedYear}
           onChange={(e) => onYearChange(e.target.value)}
-          className="border border-gray-300 rounded-md px-3 py-2 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="border border-gray-300 rounded-md px-3 py-2 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-50"
         >
           {availableYears.map(year => (
             <option key={year} value={year}>
@@ -33,7 +33,7 @@ export const YearFilter = ({ selectedYear, onYearChange }) => {
             </option>
           ))}
         </select>
-        <span className="ml-3 text-sm text-gray-500">
+        <span className="ml-3 text-sm text-gray-500 dark:text-slate-400">
           ({availableYears.length} year{availableYears.length !== 1 ? 's' : ''} available) - Click Search to Apply
         </span>
       </div>

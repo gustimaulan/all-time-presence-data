@@ -48,8 +48,8 @@ export const PresenceTable = ({
     : groupedByTutorData
 
   return (
-    <div className="mt-4">
-      <div className="flex items-center justify-end mb-4">
+    <div className="mt-4 bg-white rounded-lg dark:bg-slate-800">
+      <div className="flex items-center justify-end p-2">
         <input
           type="checkbox"
           id="groupByTutor"
@@ -57,12 +57,12 @@ export const PresenceTable = ({
           onChange={(e) => setIsGroupedByTutor(e.target.checked)}
           className="mr-2"
         />
-        <label htmlFor="groupByTutor" className="text-sm font-medium text-gray-700">
+        <label htmlFor="groupByTutor" className="text-sm font-medium text-gray-700 dark:text-slate-300">
           Group by Tutor
         </label>
       </div>
       {data.length > 0 && (
-        <div className="flex items-center justify-end mb-4">
+        <div className="flex items-center justify-end mb-4 p-2">
           <input
             type="checkbox"
             id="groupByStudent"
@@ -71,40 +71,40 @@ export const PresenceTable = ({
             className="mr-2"
             disabled={!isGroupedByTutor}
           />
-          <label htmlFor="groupByStudent" className="text-sm font-medium text-gray-700">
+          <label htmlFor="groupByStudent" className="text-sm font-medium text-gray-700 dark:text-slate-300">
             Group by Student
           </label>
         </div>
       )}
       <div id="tableTop" className="overflow-x-auto">
-        <table className="w-full border-collapse border border-gray-300">
-          <thead className="bg-gray-100">
+        <table className="w-full border-collapse border border-gray-300 dark:border-slate-700">
+          <thead className="bg-gray-100 dark:bg-slate-700">
             <tr>
-              <th className="border border-gray-300 p-2">Tutor</th>
-              <th className="border border-gray-300 p-2">Student</th>
-              <th className="border border-gray-300 p-2">Date</th>
-              <th className="border border-gray-300 p-2">Time</th>
-              <th className="border border-gray-300 p-2">Timestamp</th>
+              <th className="border border-gray-300 p-2 text-gray-700 dark:border-slate-700 dark:text-slate-200">Tutor</th>
+              <th className="border border-gray-300 p-2 text-gray-700 dark:border-slate-700 dark:text-slate-200">Student</th>
+              <th className="border border-gray-300 p-2 text-gray-700 dark:border-slate-700 dark:text-slate-200">Date</th>
+              <th className="border border-gray-300 p-2 text-gray-700 dark:border-slate-700 dark:text-slate-200">Time</th>
+              <th className="border border-gray-300 p-2 text-gray-700 dark:border-slate-700 dark:text-slate-200">Timestamp</th>
             </tr>
           </thead>
-          <tbody className="bg-white">
+          <tbody className="bg-white dark:bg-slate-800 dark:text-slate-300">
             {isLoading ? (
               [...Array(10)].map((_, index) => (
                 <tr key={index}>
-                  <td className="border border-gray-300 p-2">
-                    <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+                  <td className="border border-gray-300 p-2 dark:border-slate-700">
+                    <div className="h-4 bg-gray-200 rounded animate-pulse dark:bg-slate-600"></div>
                   </td>
-                  <td className="border border-gray-300 p-2">
-                    <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+                  <td className="border border-gray-300 p-2 dark:border-slate-700">
+                    <div className="h-4 bg-gray-200 rounded animate-pulse dark:bg-slate-600"></div>
                   </td>
-                  <td className="border border-gray-300 p-2">
-                    <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+                  <td className="border border-gray-300 p-2 dark:border-slate-700">
+                    <div className="h-4 bg-gray-200 rounded animate-pulse dark:bg-slate-600"></div>
                   </td>
-                  <td className="border border-gray-300 p-2">
-                    <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+                  <td className="border border-gray-300 p-2 dark:border-slate-700">
+                    <div className="h-4 bg-gray-200 rounded animate-pulse dark:bg-slate-600"></div>
                   </td>
-                  <td className="border border-gray-300 p-2">
-                    <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+                  <td className="border border-gray-300 p-2 dark:border-slate-700">
+                    <div className="h-4 bg-gray-200 rounded animate-pulse dark:bg-slate-600"></div>
                   </td>
                 </tr>
               ))
@@ -112,38 +112,38 @@ export const PresenceTable = ({
               isGroupedByTutor ? (
                 Object.entries(finalGroupedData).map(([tutorName, tutorGroup]) => (
                   <React.Fragment key={tutorName}>
-                    <tr className="bg-gray-200">
-                      <td colSpan="5" className="border border-gray-300 p-2 font-bold text-blue-500">
+                    <tr className="bg-gray-200 dark:bg-slate-700">
+                      <td colSpan="5" className="border border-gray-300 p-2 font-bold text-blue-500 dark:border-slate-700 dark:text-blue-300">
                         <i className="fas fa-user mr-2"></i>{tutorName}
                       </td>
                     </tr>
                     {isGroupedByStudent ? (
                       Object.entries(tutorGroup).map(([studentName, studentSessions]) => (
                         <React.Fragment key={`${tutorName}-${studentName}`}>
-                          <tr className="bg-gray-100">
-                            <td colSpan="5" className="border border-gray-300 p-2 font-semibold text-gray-700 pl-8">
+                          <tr className="bg-gray-100 dark:bg-slate-600">
+                            <td colSpan="5" className="border border-gray-300 p-2 font-semibold text-gray-700 pl-8 dark:border-slate-700 dark:text-slate-200">
                               <FaUser className="inline-block mr-2" />{studentName}
                             </td>
                           </tr>
                           {studentSessions.map((item, index) => (
-                            <tr key={`${item["Timestamp"]}-${index}`}>
-                              <td className="border border-gray-300 p-2"></td> {/* Empty for grouped view */}
-                              <td className="border border-gray-300 p-2 pl-12">{item["Nama Siswa"]}</td>
-                              <td className="border border-gray-300 p-2">{item["Hari dan Tanggal Les"]}</td>
-                              <td className="border border-gray-300 p-2">{formatTimeToHHMM(String(item["Jam Kegiatan Les"]))}</td>
-                              <td className="border border-gray-300 p-2">{item["Timestamp"]}</td>
+                            <tr key={`${item["Timestamp"]}-${index}`} className="dark:hover:bg-slate-700">
+                              <td className="border border-gray-300 p-2 dark:border-slate-700"></td> {/* Empty for grouped view */}
+                              <td className="border border-gray-300 p-2 pl-12 dark:border-slate-700">{item["Nama Siswa"]}</td>
+                              <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Hari dan Tanggal Les"]}</td>
+                              <td className="border border-gray-300 p-2 dark:border-slate-700">{formatTimeToHHMM(String(item["Jam Kegiatan Les"]))}</td>
+                              <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Timestamp"]}</td>
                             </tr>
                           ))}
                         </React.Fragment>
                       ))
                     ) : (
                       tutorGroup.map((item, index) => (
-                        <tr key={`${item["Timestamp"]}-${index}`}>
-                          <td className="border border-gray-300 p-2"></td> {/* Empty for grouped view */}
-                          <td className="border border-gray-300 p-2">{item["Nama Siswa"]}</td>
-                          <td className="border border-gray-300 p-2">{item["Hari dan Tanggal Les"]}</td>
-                          <td className="border border-gray-300 p-2">{formatTimeToHHMM(String(item["Jam Kegiatan Les"]))}</td>
-                          <td className="border border-gray-300 p-2">{item["Timestamp"]}</td>
+                        <tr key={`${item["Timestamp"]}-${index}`} className="dark:hover:bg-slate-700">
+                          <td className="border border-gray-300 p-2 dark:border-slate-700"></td> {/* Empty for grouped view */}
+                          <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Nama Siswa"]}</td>
+                          <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Hari dan Tanggal Les"]}</td>
+                          <td className="border border-gray-300 p-2 dark:border-slate-700">{formatTimeToHHMM(String(item["Jam Kegiatan Les"]))}</td>
+                          <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Timestamp"]}</td>
                         </tr>
                       ))
                     )}
@@ -151,22 +151,22 @@ export const PresenceTable = ({
                 ))
               ) : (
                 data.map((item, index) => (
-                  <tr key={`${item["Timestamp"]}-${index}`}>
-                    <td className="border border-gray-300 p-2">{item["Nama Tentor"]}</td>
-                    <td className="border border-gray-300 p-2">{item["Nama Siswa"]}</td>
-                    <td className="border border-gray-300 p-2">{item["Hari dan Tanggal Les"]}</td>
-                    <td className="border border-gray-300 p-2">{formatTimeToHHMM(String(item["Jam Kegiatan Les"]))}</td>
-                    <td className="border border-gray-300 p-2">{item["Timestamp"]}</td>
+                  <tr key={`${item["Timestamp"]}-${index}`} className="dark:hover:bg-slate-700">
+                    <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Nama Tentor"]}</td>
+                    <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Nama Siswa"]}</td>
+                    <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Hari dan Tanggal Les"]}</td>
+                    <td className="border border-gray-300 p-2 dark:border-slate-700">{formatTimeToHHMM(String(item["Jam Kegiatan Les"]))}</td>
+                    <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Timestamp"]}</td>
                   </tr>
                 ))
               )
             ) : (
               <tr>
-                <td colSpan="5" className="text-center py-8 text-gray-500">
+                <td colSpan="5" className="text-center py-8 text-gray-500 dark:text-slate-400">
                   <div>
                     <p className="mb-2">{getEmptyMessage()}</p>
                     {searchQuery && (
-                      <p className="text-sm text-gray-400">
+                      <p className="text-sm text-slate-400">
                         Search is performed across tutor names, student names, dates, times, and timestamps.
                       </p>
                     )}

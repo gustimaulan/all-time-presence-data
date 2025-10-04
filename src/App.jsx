@@ -7,6 +7,7 @@ import { PresenceTable } from './components/PresenceTable'
 import { usePresenceData } from './hooks/usePresenceData'
 import { ToastProvider, useToast } from './context/ToastContext'
 import { useDebounce } from './hooks/useDebounce'
+import axios from './axios'
 
 function App() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -52,6 +53,11 @@ function App() {
   const handleRefresh = async () => {
     try {
       setIsRefreshing(true)
+      // Call to clear cache
+      await axios.post('https://presensi.sigmath.net/api/cache/clear')
+      addToast('Cache cleared successfully!', 'success')
+
+      // Existing manual data refresh
       const result = await manualRefresh()
       addToast(result.message || 'Data refreshed successfully', 'success')
     } catch (error) {
@@ -85,8 +91,8 @@ function App() {
   }
 
   return (
-    <div className="bg-gray-100 w-full min-h-screen flex flex-col">
-      <div className="bg-white max-w-2xl w-full min-h-screen mx-auto">
+    <div className="bg-gray-100 w-full min-h-screen flex flex-col dark:bg-slate-900 dark:text-slate-100">
+      <div className="bg-white max-w-2xl w-full min-h-screen mx-auto dark:bg-slate-800">
         <Header 
           isFetching={isFetching || isRefreshing} 
           handleRefresh={handleRefresh}

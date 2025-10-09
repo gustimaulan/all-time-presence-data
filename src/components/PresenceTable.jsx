@@ -82,8 +82,7 @@ export const PresenceTable = ({
             <tr>
               <th className="border border-gray-300 p-2 text-gray-700 dark:border-slate-700 dark:text-slate-200">Tutor</th>
               <th className="border border-gray-300 p-2 text-gray-700 dark:border-slate-700 dark:text-slate-200">Student</th>
-              <th className="border border-gray-300 p-2 text-gray-700 dark:border-slate-700 dark:text-slate-200">Date</th>
-              <th className="border border-gray-300 p-2 text-gray-700 dark:border-slate-700 dark:text-slate-200">Time</th>
+              <th className="border border-gray-300 p-2 text-gray-700 dark:border-slate-700 dark:text-slate-200">Date & Time</th>
               <th className="border border-gray-300 p-2 text-gray-700 dark:border-slate-700 dark:text-slate-200">Timestamp</th>
             </tr>
           </thead>
@@ -129,8 +128,10 @@ export const PresenceTable = ({
                             <tr key={`${item["Timestamp"]}-${index}`}>
                               <td className="border border-gray-300 p-2 dark:border-slate-700"></td> {/* Empty for grouped view */}
                               <td className="border border-gray-300 p-2 pl-12 dark:border-slate-700">{item["Nama Siswa"]}</td>
-                              <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Hari dan Tanggal Les"]}</td>
-                              <td className="border border-gray-300 p-2 dark:border-slate-700">{formatTimeToHHMM(String(item["Jam Kegiatan Les"]))}</td>
+                              <td className="border border-gray-300 p-2 dark:border-slate-700">
+                                <div>{item["Hari dan Tanggal Les"]}</div>
+                                <div className="text-xs text-gray-500 dark:text-slate-400">{formatTimeToHHMM(String(item["Jam Kegiatan Les"]))}</div>
+                              </td>
                               <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Timestamp"]}</td>
                             </tr>
                           ))}
@@ -141,8 +142,10 @@ export const PresenceTable = ({
                         <tr key={`${item["Timestamp"]}-${index}`}>
                           <td className="border border-gray-300 p-2 dark:border-slate-700"></td> {/* Empty for grouped view */}
                           <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Nama Siswa"]}</td>
-                          <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Hari dan Tanggal Les"]}</td>
-                          <td className="border border-gray-300 p-2 dark:border-slate-700">{formatTimeToHHMM(String(item["Jam Kegiatan Les"]))}</td>
+                          <td className="border border-gray-300 p-2 dark:border-slate-700">
+                            <div>{item["Hari dan Tanggal Les"]}</div>
+                            <div className="text-xs text-gray-500 dark:text-slate-400">{formatTimeToHHMM(String(item["Jam Kegiatan Les"]))}</div>
+                          </td>
                           <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Timestamp"]}</td>
                         </tr>
                       ))
@@ -154,8 +157,10 @@ export const PresenceTable = ({
                   <tr key={`${item["Timestamp"]}-${index}`}>
                     <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Nama Tentor"]}</td>
                     <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Nama Siswa"]}</td>
-                    <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Hari dan Tanggal Les"]}</td>
-                    <td className="border border-gray-300 p-2 dark:border-slate-700">{formatTimeToHHMM(String(item["Jam Kegiatan Les"]))}</td>
+                    <td className="border border-gray-300 p-2 dark:border-slate-700">
+                      <div>{item["Hari dan Tanggal Les"]}</div>
+                      <div className="text-xs text-gray-500 dark:text-slate-400">{formatTimeToHHMM(String(item["Jam Kegiatan Les"]))}</div>
+                    </td>
                     <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Timestamp"]}</td>
                   </tr>
                 ))

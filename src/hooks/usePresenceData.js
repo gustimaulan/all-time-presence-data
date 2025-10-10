@@ -64,7 +64,7 @@ export const usePresenceData = (year = null, page = 1, pageSize = 15, searchQuer
     cacheTime: CACHE_TIME,
     refetchOnWindowFocus: false,
     refetchOnReconnect: true,
-    keepPreviousData: true,
+    // keepPreviousData: true, // Removed to prevent stale data display
     retry: (failureCount, error) => {
       if (error instanceof APIError && error.status >= 400 && error.status < 500) {
         return false

@@ -38,12 +38,11 @@ function App() {
     setCurrentPage(1)
   }, [activeSearchQuery, activeSelectedYear])
 
-  const handleSearch = useCallback((e) => {
-    e.preventDefault()
+  const handleSearch = useCallback((query) => {
     // When form is submitted, immediately set activeSearchQuery and activeSelectedYear
-    setActiveSearchQuery(searchQuery)
+    setActiveSearchQuery(query)
     setActiveSelectedYear(selectedYear)
-  }, [searchQuery, selectedYear])
+  }, [selectedYear])
 
   const handleYearChange = useCallback((year) => {
     setSelectedYear(year)

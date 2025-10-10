@@ -87,46 +87,34 @@ export const PresenceTable = ({
             </tr>
           </thead>
           <tbody className="bg-white dark:bg-slate-800 dark:text-slate-300">
-            {isLoading ? (
-              [...Array(10)].map((_, index) => (
-                <tr key={index}>
-                  <td className="border border-gray-300 p-2 dark:border-slate-700">
+            {isLoading ? ([...Array(10)].map((_, index) => (
+                <tr key={index}><td className="border border-gray-300 p-2 dark:border-slate-700">
                     <div className="h-4 bg-gray-200 rounded animate-pulse dark:bg-slate-600"></div>
-                  </td>
-                  <td className="border border-gray-300 p-2 dark:border-slate-700">
+                  </td><td className="border border-gray-300 p-2 dark:border-slate-700">
                     <div className="h-4 bg-gray-200 rounded animate-pulse dark:bg-slate-600"></div>
-                  </td>
-                  <td className="border border-gray-300 p-2 dark:border-slate-700">
+                  </td><td className="border border-gray-300 p-2 dark:border-slate-700">
                     <div className="h-4 bg-gray-200 rounded animate-pulse dark:bg-slate-600"></div>
-                  </td>
-                  <td className="border border-gray-300 p-2 dark:border-slate-700">
+                  </td><td className="border border-gray-300 p-2 dark:border-slate-700">
                     <div className="h-4 bg-gray-200 rounded animate-pulse dark:bg-slate-600"></div>
-                  </td>
-                  <td className="border border-gray-300 p-2 dark:border-slate-700">
+                  </td><td className="border border-gray-300 p-2 dark:border-slate-700">
                     <div className="h-4 bg-gray-200 rounded animate-pulse dark:bg-slate-600"></div>
-                  </td>
-                </tr>
-              ))
-            ) : data.length > 0 ? (
+                  </td></tr>
+              )))
+            : data.length > 0 ? (
               isGroupedByTutor ? (
                 Object.entries(finalGroupedData).map(([tutorName, tutorGroup]) => (
                   <React.Fragment key={tutorName}>
-                    <tr className="bg-gray-200 dark:bg-slate-700">
-                      <td colSpan="5" className="border border-gray-300 p-2 font-bold text-blue-500 dark:border-slate-700 dark:text-blue-300">
+                    <tr className="bg-gray-200 dark:bg-slate-700"><td colSpan="5" className="border border-gray-300 p-2 font-bold text-blue-500 dark:border-slate-700 dark:text-blue-300">
                         <i className="fas fa-user mr-2"></i>{tutorName}
-                      </td>
-                    </tr>
+                      </td></tr>
                     {isGroupedByStudent ? (
                       Object.entries(tutorGroup).map(([studentName, studentSessions]) => (
                         <React.Fragment key={`${tutorName}-${studentName}`}>
-                          <tr className="bg-gray-100 dark:bg-slate-600">
-                            <td colSpan="5" className="border border-gray-300 p-2 font-semibold text-gray-700 pl-8 dark:border-slate-700 dark:text-slate-200">
+                          <tr className="bg-gray-100 dark:bg-slate-600"><td colSpan="5" className="border border-gray-300 p-2 font-semibold text-gray-700 pl-8 dark:border-slate-700 dark:text-slate-200">
                               <FaUser className="inline-block mr-2" />{studentName}
-                            </td>
-                          </tr>
+                            </td></tr>
                           {studentSessions.map((item, index) => (
-                            <tr key={`${item["Timestamp"]}-${index}`}>
-                              <td className="border border-gray-300 p-2 dark:border-slate-700"></td> {/* Empty for grouped view */}
+                            <tr key={`${item["Timestamp"]}-${index}`}><td className="border border-gray-300 p-2 dark:border-slate-700"></td> {/* Empty for grouped view */}
                               <td className="border border-gray-300 p-2 pl-12 dark:border-slate-700">{item["Nama Siswa"]}</td>
                               <td className="border border-gray-300 p-2 dark:border-slate-700">
                                 <div>{item["Hari dan Tanggal Les"]}</div>
@@ -139,8 +127,7 @@ export const PresenceTable = ({
                       ))
                     ) : (
                       tutorGroup.map((item, index) => (
-                        <tr key={`${item["Timestamp"]}-${index}`}>
-                          <td className="border border-gray-300 p-2 dark:border-slate-700"></td> {/* Empty for grouped view */}
+                        <tr key={`${item["Timestamp"]}-${index}`}><td className="border border-gray-300 p-2 dark:border-slate-700"></td> {/* Empty for grouped view */}
                           <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Nama Siswa"]}</td>
                           <td className="border border-gray-300 p-2 dark:border-slate-700">
                             <div>{item["Hari dan Tanggal Les"]}</div>
@@ -154,8 +141,7 @@ export const PresenceTable = ({
                 ))
               ) : (
                 data.map((item, index) => (
-                  <tr key={`${item["Timestamp"]}-${index}`}>
-                    <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Nama Tentor"]}</td>
+                  <tr key={`${item["Timestamp"]}-${index}`}><td className="border border-gray-300 p-2 dark:border-slate-700">{item["Nama Tentor"]}</td>
                     <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Nama Siswa"]}</td>
                     <td className="border border-gray-300 p-2 dark:border-slate-700">
                       <div>{item["Hari dan Tanggal Les"]}</div>
@@ -166,8 +152,7 @@ export const PresenceTable = ({
                 ))
               )
             ) : (
-              <tr>
-                <td colSpan="5" className="text-center py-8 text-gray-500 dark:text-slate-400">
+              <tr><td colSpan="5" className="text-center py-8 text-gray-500 dark:text-slate-400">
                   <div>
                     <p className="mb-2">{getEmptyMessage()}</p>
                     {searchQuery && (
@@ -176,8 +161,7 @@ export const PresenceTable = ({
                       </p>
                     )}
                   </div>
-                </td>
-              </tr>
+                </td></tr>
             )}
           </tbody>
         </table>

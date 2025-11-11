@@ -19,15 +19,16 @@ function App() {
   
   const { addToast } = useToast()
   
-  const { 
-    data, 
+  const {
+    data,
     pagination,
     cached,
-    isLoading, 
+    isLoading,
     isFetching,
     isError,
-    error, 
-    manualRefresh
+    error,
+    manualRefresh,
+    queryClient
   } = usePresenceData(activeSelectedYear, currentPage, 15, activeSearchQuery)
 
   // Determine if it's the very first loading state before any data is fetched
@@ -52,16 +53,15 @@ function App() {
   const handleRefresh = async () => {
     try {
       setIsRefreshing(true)
-      // Call to clear cache
-      await axios.post('https://presensi.sigmath.net/api/cache/clear')
+      // Only clear cache, don't fetch new data
+      await axios.post('/cache/clear')
       addToast('Cache cleared successfully!', 'success')
 
-      // Existing manual data refresh
-      const result = await manualRefresh()
-      addToast(result.message || 'Data refreshed successfully', 'success')
+      // Invalidate React Query cache to force fresh fetch on next interaction
+      queryClient.invalidateQueries({ queryKey: ['presence-data'] })
     } catch (error) {
-      console.error('Refresh failed:', error)
-      addToast(error.message || 'Failed to refresh data', 'error')
+      console.error('Cache clear failed:', error)
+      addToast(error.message || 'Failed to clear cache', 'error')
     } finally {
       setIsRefreshing(false)
     }

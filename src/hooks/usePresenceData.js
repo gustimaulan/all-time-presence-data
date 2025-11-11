@@ -105,6 +105,7 @@ export const usePresenceData = (year = null, page = 1, pageSize = 15, searchQuer
     manualRefresh,
     refetch: query.refetch,
     dataUpdatedAt: query.dataUpdatedAt,
-    lastErrorAt: query.errorUpdatedAt
+    lastErrorAt: query.errorUpdatedAt,
+    queryClient
   }
 }

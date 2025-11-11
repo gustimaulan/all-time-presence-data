@@ -1,0 +1,33 @@
+name = "presence-data-frontend"
+compatibility_date = "2023-12-01"
+
+[env.production]
+name = "presence-data-frontend"
+routes = [
+  { pattern = "your-domain.com/api/*", zone_name = "your-domain.com" }
+]
+vars = { API_BASE_URL = "https://presensi.sigmath.net/api" }
+
+[env.staging]
+name = "presence-data-frontend-staging"
+routes = [
+  { pattern = "staging-your-domain.com/api/*", zone_name = "staging-your-domain.com" }
+]
+vars = { API_BASE_URL = "https://presensi.sigmath.net/api" }
+
+[[env.production.build]]
+command = "npm run build"
+cwd = "."
+
+[[env.staging.build]]
+command = "npm run build"
+cwd = "."
+
+# Configure API proxy function
+[[env.production.functions]]
+name = "api-proxy"
+route = { pattern = "your-domain.com/api/*", zone_name = "your-domain.com" }
+
+[[env.staging.functions]]
+name = "api-proxy"
+route = { pattern = "staging-your-domain.com/api/*", zone_name = "staging-your-domain.com" }

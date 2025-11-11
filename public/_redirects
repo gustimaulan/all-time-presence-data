@@ -1,0 +1,5 @@
+# Handle API routes - proxy to backend
+/api/*  https://presensi.sigmath.net/api/:splat  200
+
+# Handle SPA routing - all other routes go to index.html
+/*    /index.html   200

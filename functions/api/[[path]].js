@@ -1,16 +1,16 @@
 export async function onRequest(context) {
-  const { request, env, params } = context;
+  const { request, env } = context;
   
   // Backend URL - can be configured in environment variables
-  const backendUrl = 'https://presensi.sigmath.net/api';
+  const backendUrl = env.API_BASE_URL || 'https://presensi.sigmath.net/api';
   
-  // Get the path from the request
-  const path = params.path ? params.path.join('/') : '';
+  // Get the path from the request URL
   const url = new URL(request.url);
+  const path = url.pathname.replace('/api', '') || '';
   const queryString = url.search;
   
   // Construct the target URL
-  const targetUrl = `${backendUrl}/${path}${queryString}`;
+  const targetUrl = `${backendUrl}${path}${queryString}`;
   
   // Handle CORS preflight
   if (request.method === 'OPTIONS') {
@@ -25,11 +25,16 @@ export async function onRequest(context) {
   }
   
   try {
+    // Create headers object without host header
+    const headers = new Headers(request.headers);
+    headers.delete('host');
+    
     // Forward the request to the backend
     const response = await fetch(targetUrl, {
       method: request.method,
-      headers: request.headers,
+      headers: headers,
       body: request.body,
+      redirect: 'follow'
     });
     
     // Create a new response with the backend's response
@@ -46,12 +51,13 @@ export async function onRequest(context) {
     
     return proxyResponse;
   } catch (error) {
-    return new Response(JSON.stringify({ 
-      error: 'Proxy Error', 
-      message: error.message 
+    console.error('Proxy error:', error);
+    return new Response(JSON.stringify({
+      error: 'Proxy Error',
+      message: error.message
     }), {
       status: 500,
-      headers: { 
+      headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       },

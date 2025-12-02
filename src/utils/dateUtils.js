@@ -6,6 +6,22 @@ export const parseDate = (dateString) => {
   return new Date(0)
 }
 
+export const formatDateToLong = (dateString) => {
+  const date = parseDate(dateString)
+  if (isNaN(date.getTime())) {
+    return dateString // Return original if parsing fails
+  }
+  
+  const options = {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  }
+  
+  return date.toLocaleDateString('id-ID', options)
+}
+
 export const formatTimeToHHMM = (timeString) => {
   if (!timeString) return ''
 

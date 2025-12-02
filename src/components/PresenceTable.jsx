@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
-import React, { useState } from 'react'
+import React from 'react'
 import { Pagination } from './Pagination'
-import { formatTimeToHHMM } from '../utils/dateUtils'
-import { FaUser } from 'react-icons/fa'
+import { formatTimeToHHMM, formatDateToLong } from '../utils/dateUtils'
+import { FaUser, FaClock, FaCalendarAlt, FaHourglassHalf, FaHashtag } from 'react-icons/fa'
 
 export const PresenceTable = ({
   data,
@@ -12,9 +12,6 @@ export const PresenceTable = ({
   currentPage,
   searchQuery
 }) => {
-  const [isGroupedByTutor, setIsGroupedByTutor] = useState(false)
-  const [isGroupedByStudent, setIsGroupedByStudent] = useState(false)
-
   const getEmptyMessage = () => {
     if (searchQuery && searchQuery.trim()) {
       return `No results found for "${searchQuery}". Try adjusting your search terms.`
@@ -22,68 +19,30 @@ export const PresenceTable = ({
     return "Type in the search box above to view your data."
   }
 
-  const groupedByTutorData = isGroupedByTutor
-    ? data.reduce((acc, item) => {
-        const tutorName = item["Nama Tentor"]
-        if (!acc[tutorName]) {
-          acc[tutorName] = []
-        }
-        acc[tutorName].push(item)
-        return acc
-      }, {})
-    : null
-
-  const finalGroupedData = isGroupedByTutor && isGroupedByStudent
-    ? Object.entries(groupedByTutorData).reduce((acc, [tutorName, sessions]) => {
-        acc[tutorName] = sessions.reduce((studentAcc, session) => {
-          const studentName = session["Nama Siswa"]
-          if (!studentAcc[studentName]) {
-            studentAcc[studentName] = []
-          }
-          studentAcc[studentName].push(session)
-          return studentAcc
-        }, {})
-        return acc
-      }, {})
-    : groupedByTutorData
+  const getDurationBadgeColor = (duration) => {
+    if (!duration) return 'bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100'
+    
+    const numDuration = parseInt(duration)
+    if (isNaN(numDuration)) return 'bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100'
+    
+    // Badge color ranges based on duration (in minutes)
+    if (numDuration <= 30) return 'bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100'      // Cool blue for short sessions
+    if (numDuration <= 60) return 'bg-cyan-100 text-cyan-800 dark:bg-cyan-800 dark:text-cyan-100'     // Light blue
+    if (numDuration <= 90) return 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100'    // Green
+    if (numDuration <= 120) return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100'  // Yellow
+    if (numDuration <= 150) return 'bg-orange-100 text-orange-800 dark:bg-orange-800 dark:text-orange-100'  // Orange
+    return 'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100'                              // Hot red for long sessions
+  }
 
   return (
     <div className="mt-4 bg-white rounded-lg dark:bg-slate-800">
-      <div className="flex items-center justify-end p-2">
-        <input
-          type="checkbox"
-          id="groupByTutor"
-          checked={isGroupedByTutor}
-          onChange={(e) => setIsGroupedByTutor(e.target.checked)}
-          className="mr-2"
-        />
-        <label htmlFor="groupByTutor" className="text-sm font-medium text-gray-700 dark:text-slate-300">
-          Group by Tutor
-        </label>
-      </div>
-      {data.length > 0 && (
-        <div className="flex items-center justify-end mb-4 p-2">
-          <input
-            type="checkbox"
-            id="groupByStudent"
-            checked={isGroupedByStudent}
-            onChange={(e) => setIsGroupedByStudent(e.target.checked)}
-            className="mr-2"
-            disabled={!isGroupedByTutor}
-          />
-          <label htmlFor="groupByStudent" className="text-sm font-medium text-gray-700 dark:text-slate-300">
-            Group by Student
-          </label>
-        </div>
-      )}
       <div id="tableTop" className="overflow-x-auto">
-        <table className="w-full border-collapse border border-gray-300 dark:border-slate-700">
+        <table className="w-full border-collapse border border-gray-300 dark:border-slate-700 table-fixed">
           <thead className="bg-gray-100 dark:bg-slate-700">
             <tr>
               <th className="border border-gray-300 p-2 text-gray-700 dark:border-slate-700 dark:text-slate-200">Tutor</th>
-              <th className="border border-gray-300 p-2 text-gray-700 dark:border-slate-700 dark:text-slate-200">Student</th>
-              <th className="border border-gray-300 p-2 text-gray-700 dark:border-slate-700 dark:text-slate-200">Date & Time</th>
-              <th className="border border-gray-300 p-2 text-gray-700 dark:border-slate-700 dark:text-slate-200">Timestamp</th>
+              <th className="border border-gray-300 p-2 text-gray-700 dark:border-slate-700 dark:text-slate-200 ">Student</th>
+              <th className="border border-gray-300 p-2 text-gray-700 dark:border-slate-700 dark:text-slate-200 ">Date Time</th>
             </tr>
           </thead>
           <tbody className="bg-white dark:bg-slate-800 dark:text-slate-300">
@@ -94,65 +53,45 @@ export const PresenceTable = ({
                     <div className="h-4 bg-gray-200 rounded animate-pulse dark:bg-slate-600"></div>
                   </td><td className="border border-gray-300 p-2 dark:border-slate-700">
                     <div className="h-4 bg-gray-200 rounded animate-pulse dark:bg-slate-600"></div>
-                  </td><td className="border border-gray-300 p-2 dark:border-slate-700">
-                    <div className="h-4 bg-gray-200 rounded animate-pulse dark:bg-slate-600"></div>
-                  </td><td className="border border-gray-300 p-2 dark:border-slate-700">
-                    <div className="h-4 bg-gray-200 rounded animate-pulse dark:bg-slate-600"></div>
                   </td></tr>
               )))
             : data.length > 0 ? (
-              isGroupedByTutor ? (
-                Object.entries(finalGroupedData).map(([tutorName, tutorGroup]) => (
-                  <React.Fragment key={tutorName}>
-                    <tr className="bg-gray-200 dark:bg-slate-700"><td colSpan="5" className="border border-gray-300 p-2 font-bold text-blue-500 dark:border-slate-700 dark:text-blue-300">
-                        <i className="fas fa-user mr-2"></i>{tutorName}
-                      </td></tr>
-                    {isGroupedByStudent ? (
-                      Object.entries(tutorGroup).map(([studentName, studentSessions]) => (
-                        <React.Fragment key={`${tutorName}-${studentName}`}>
-                          <tr className="bg-gray-100 dark:bg-slate-600"><td colSpan="5" className="border border-gray-300 p-2 font-semibold text-gray-700 pl-8 dark:border-slate-700 dark:text-slate-200">
-                              <FaUser className="inline-block mr-2" />{studentName}
-                            </td></tr>
-                          {studentSessions.map((item, index) => (
-                            <tr key={`${item["Timestamp"]}-${index}`}><td className="border border-gray-300 p-2 dark:border-slate-700"></td> {/* Empty for grouped view */}
-                              <td className="border border-gray-300 p-2 pl-12 dark:border-slate-700">{item["Nama Siswa"]}</td>
-                              <td className="border border-gray-300 p-2 dark:border-slate-700">
-                                <div>{item["Hari dan Tanggal Les"]}</div>
-                                <div className="text-xs text-gray-500 dark:text-slate-400">{formatTimeToHHMM(String(item["Jam Kegiatan Les"]))}</div>
-                              </td>
-                              <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Timestamp"]}</td>
-                            </tr>
-                          ))}
-                        </React.Fragment>
-                      ))
-                    ) : (
-                      tutorGroup.map((item, index) => (
-                        <tr key={`${item["Timestamp"]}-${index}`}><td className="border border-gray-300 p-2 dark:border-slate-700"></td> {/* Empty for grouped view */}
-                          <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Nama Siswa"]}</td>
-                          <td className="border border-gray-300 p-2 dark:border-slate-700">
-                            <div>{item["Hari dan Tanggal Les"]}</div>
-                            <div className="text-xs text-gray-500 dark:text-slate-400">{formatTimeToHHMM(String(item["Jam Kegiatan Les"]))}</div>
-                          </td>
-                          <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Timestamp"]}</td>
-                        </tr>
-                      ))
-                    )}
-                  </React.Fragment>
-                ))
-              ) : (
                 data.map((item, index) => (
-                  <tr key={`${item["Timestamp"]}-${index}`}><td className="border border-gray-300 p-2 dark:border-slate-700">{item["Nama Tentor"]}</td>
-                    <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Nama Siswa"]}</td>
-                    <td className="border border-gray-300 p-2 dark:border-slate-700">
-                      <div>{item["Hari dan Tanggal Les"]}</div>
-                      <div className="text-xs text-gray-500 dark:text-slate-400">{formatTimeToHHMM(String(item["Jam Kegiatan Les"]))}</div>
+                  <tr key={`${item["Timestamp"]}-${index}`}><td className="border border-gray-300 p-2 dark:border-slate-700">
+                      <div className="flex items-center">
+                        <span className="font-medium break-words">{item["Nama Tentor"]}</span>
+                      </div>
                     </td>
-                    <td className="border border-gray-300 p-2 dark:border-slate-700">{item["Timestamp"]}</td>
+                    <td className="border border-gray-300 p-2 dark:border-slate-700">
+                      <div className="break-words" title={item["Nama Siswa"]}>
+                        {item["Nama Siswa"]}
+                      </div>
+                      {item["Durasi Les"] && (
+                        <div className="mt-2">
+                          <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getDurationBadgeColor(item["Durasi Les"])}`}>
+                            {item["Durasi Les"]} min
+                          </span>
+                        </div>
+                      )}
+                    </td>
+                    <td className="border border-gray-300 p-2 dark:border-slate-700">
+                      <div className="flex items-start">
+                        <FaCalendarAlt className="mr-2 mt-1 text-gray-400 dark:text-gray-400 flex-shrink-0" />
+                        <span className="break-words">{formatDateToLong(item["Hari dan Tanggal Les"])}</span>
+                      </div>
+                      <div className="flex items-start mt-1">
+                        <FaClock className="mr-2 mt-1 text-gray-400 dark:text-gray-500 text-sm flex-shrink-0" />
+                        <span className="text-sm text-gray-600 dark:text-slate-400 break-words">{formatTimeToHHMM(String(item["Jam Kegiatan Les"]))}</span>
+                      </div>
+                      <div className="flex items-start mt-1">
+                        <FaHashtag className="mr-2 mt-1 text-gray-400 dark:text-slate-500 text-xs flex-shrink-0" />
+                        <span className="text-xs text-gray-400 dark:text-slate-500 break-words">Submitted at: {item["Timestamp"]}</span>
+                      </div>
+                    </td>
                   </tr>
                 ))
-              )
             ) : (
-              <tr><td colSpan="5" className="text-center py-8 text-gray-500 dark:text-slate-400">
+              <tr><td colSpan="3" className="text-center py-8 text-gray-500 dark:text-slate-400">
                   <div>
                     <p className="mb-2">{getEmptyMessage()}</p>
                     {searchQuery && (
@@ -187,6 +126,7 @@ PresenceTable.propTypes = {
     "Nama Siswa": PropTypes.string,
     "Hari dan Tanggal Les": PropTypes.string,
     "Jam Kegiatan Les": PropTypes.string,
+    "Durasi Les": PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     "Timestamp": PropTypes.string
   })).isRequired,
   isLoading: PropTypes.bool,

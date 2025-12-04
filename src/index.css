@@ -106,4 +106,31 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+  
+  /* Prevent zoom on input focus for mobile */
+  @supports (-webkit-touch-callout: none) {
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="search"],
+    textarea,
+    select {
+      font-size: 16px !important;
+      -webkit-appearance: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+  }
+  
+  /* Prevent zoom on double-tap for mobile */
+  * {
+    touch-action: manipulation;
+  }
+  
+  /* Fix viewport scaling for mobile */
+  @viewport {
+    width: device-width;
+    initial-scale: 1;
+    maximum-scale: 1;
+    user-scalable: no;
+  }
 }

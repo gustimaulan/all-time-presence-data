@@ -126,7 +126,7 @@ export const PresenceTable = ({
                             {formatTimeToHHMM(String(item["Jam Kegiatan Les"]))}
                           </span>
                         </div>
-                        <div className="flex items-start hidden sm:block">
+                        <div className="flex items-start sm:block">
                           <FaHashtag className="mr-2 mt-0.5 text-gray-400 dark:text-gray-500 flex-shrink-0" size={10} />
                           <span className="text-xs text-gray-500 dark:text-gray-400 break-words">
                             {item["Timestamp"]}

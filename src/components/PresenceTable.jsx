@@ -35,72 +35,125 @@ export const PresenceTable = ({
   }
 
   return (
-    <div className="mt-4 bg-white rounded-lg dark:bg-slate-800">
-      <div id="tableTop" className="overflow-x-auto">
-        <table className="w-full border-collapse border border-gray-300 dark:border-slate-700 table-fixed">
-          <thead className="bg-gray-100 dark:bg-slate-700">
+    <div className="bg-white dark:bg-slate-800 rounded-lg sm:rounded-xl shadow-card overflow-hidden animate-fade-in">
+      <div id="tableTop" className="overflow-x-auto custom-scrollbar">
+        <table className="w-full min-w-full">
+          <thead className="bg-gray-50 dark:bg-slate-700/50 border-b border-gray-200 dark:border-slate-600">
             <tr>
-              <th className="border border-gray-300 p-2 text-gray-700 dark:border-slate-700 dark:text-slate-200">Tutor</th>
-              <th className="border border-gray-300 p-2 text-gray-700 dark:border-slate-700 dark:text-slate-200 ">Student</th>
-              <th className="border border-gray-300 p-2 text-gray-700 dark:border-slate-700 dark:text-slate-200 ">Date Time</th>
+              <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <div className="flex items-center space-x-1 sm:space-x-2">
+                  <FaUser className="text-gray-400" size={12} />
+                  <span className="hidden sm:inline">Tutor</span>
+                  <span className="sm:hidden">T</span>
+                </div>
+              </th>
+              <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <div className="flex items-center space-x-1 sm:space-x-2">
+                  <FaUser className="text-gray-400" size={12} />
+                  <span className="hidden sm:inline">Student</span>
+                  <span className="sm:hidden">S</span>
+                </div>
+              </th>
+              <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <div className="flex items-center space-x-1 sm:space-x-2">
+                  <FaCalendarAlt className="text-gray-400" size={12} />
+                  <span className="hidden sm:inline">Date & Time</span>
+                  <span className="sm:hidden">Date</span>
+                </div>
+              </th>
             </tr>
           </thead>
-          <tbody className="bg-white dark:bg-slate-800 dark:text-slate-300">
+          <tbody className="bg-white dark:bg-slate-800 divide-y divide-gray-200 dark:divide-slate-700">
             {isLoading ? ([...Array(10)].map((_, index) => (
-                <tr key={index}><td className="border border-gray-300 p-2 dark:border-slate-700">
-                    <div className="h-4 bg-gray-200 rounded animate-pulse dark:bg-slate-600"></div>
-                  </td><td className="border border-gray-300 p-2 dark:border-slate-700">
-                    <div className="h-4 bg-gray-200 rounded animate-pulse dark:bg-slate-600"></div>
-                  </td><td className="border border-gray-300 p-2 dark:border-slate-700">
-                    <div className="h-4 bg-gray-200 rounded animate-pulse dark:bg-slate-600"></div>
-                  </td></tr>
+                <tr key={index} className="animate-pulse">
+                  <td className="px-3 sm:px-6 py-3 sm:py-4">
+                    <div className="h-3 sm:h-4 bg-gray-200 dark:bg-slate-600 rounded w-3/4"></div>
+                  </td>
+                  <td className="px-3 sm:px-6 py-3 sm:py-4">
+                    <div className="h-3 sm:h-4 bg-gray-200 dark:bg-slate-600 rounded w-2/3 mb-2"></div>
+                    <div className="h-2 sm:h-3 bg-gray-200 dark:bg-slate-600 rounded w-1/3"></div>
+                  </td>
+                  <td className="px-3 sm:px-6 py-3 sm:py-4">
+                    <div className="space-y-1 sm:space-y-2">
+                      <div className="h-3 sm:h-4 bg-gray-200 dark:bg-slate-600 rounded w-4/5"></div>
+                      <div className="h-2 sm:h-3 bg-gray-200 dark:bg-slate-600 rounded w-3/5"></div>
+                      <div className="h-2 sm:h-3 bg-gray-200 dark:bg-slate-600 rounded w-2/5 hidden sm:block"></div>
+                    </div>
+                  </td>
+                </tr>
               )))
             : data.length > 0 ? (
                 data.map((item, index) => (
-                  <tr key={`${item["Timestamp"]}-${index}`}><td className="border border-gray-300 p-2 dark:border-slate-700">
+                  <tr key={`${item["Timestamp"]}-${index}`} className="hover:bg-gray-50 dark:hover:bg-slate-700/30 transition-colors duration-150">
+                    <td className="px-3 sm:px-6 py-3 sm:py-4">
                       <div className="flex items-center">
-                        <span className="font-medium break-words">{item["Nama Tentor"]}</span>
-                      </div>
-                    </td>
-                    <td className="border border-gray-300 p-2 dark:border-slate-700">
-                      <div className="break-words" title={item["Nama Siswa"]}>
-                        {item["Nama Siswa"]}
-                      </div>
-                      {item["Durasi Les"] && (
-                        <div className="mt-2">
-                          <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getDurationBadgeColor(item["Durasi Les"])}`}>
-                            {item["Durasi Les"]} min
+                        <div className="w-6 h-6 sm:w-8 sm:h-8 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center mr-2 sm:mr-3 flex-shrink-0">
+                          <span className="text-xs font-medium text-primary-600 dark:text-primary-400">
+                            {item["Nama Tentor"]?.charAt(0)?.toUpperCase() || 'T'}
                           </span>
                         </div>
-                      )}
+                        <span className="font-medium text-gray-900 dark:text-white break-words text-sm sm:text-base">
+                          {item["Nama Tentor"]}
+                        </span>
+                      </div>
                     </td>
-                    <td className="border border-gray-300 p-2 dark:border-slate-700">
-                      <div className="flex items-start">
-                        <FaCalendarAlt className="mr-2 mt-1 text-gray-400 dark:text-gray-400 flex-shrink-0" />
-                        <span className="break-words">{formatDateToLong(item["Hari dan Tanggal Les"])}</span>
+                    <td className="px-3 sm:px-6 py-3 sm:py-4">
+                      <div className="space-y-1 sm:space-y-2">
+                        <div className="font-medium text-gray-900 dark:text-white break-words text-sm sm:text-base" title={item["Nama Siswa"]}>
+                          {item["Nama Siswa"]}
+                        </div>
+                        {item["Durasi Les"] && (
+                          <div className="inline-flex items-center">
+                            <span className={`inline-flex items-center px-2 py-0.5 sm:px-2.5 sm:py-0.5 rounded-full text-xs font-medium ${getDurationBadgeColor(item["Durasi Les"])}`}>
+                              <FaHourglassHalf className="mr-1" size={8} />
+                              {item["Durasi Les"]} min
+                            </span>
+                          </div>
+                        )}
                       </div>
-                      <div className="flex items-start mt-1">
-                        <FaClock className="mr-2 mt-1 text-gray-400 dark:text-gray-500 text-sm flex-shrink-0" />
-                        <span className="text-sm text-gray-600 dark:text-slate-400 break-words">{formatTimeToHHMM(String(item["Jam Kegiatan Les"]))}</span>
-                      </div>
-                      <div className="flex items-start mt-1">
-                        <FaHashtag className="mr-2 mt-1 text-gray-400 dark:text-slate-500 text-xs flex-shrink-0" />
-                        <span className="text-xs text-gray-400 dark:text-slate-500 break-words">Submitted at: {item["Timestamp"]}</span>
+                    </td>
+                    <td className="px-3 sm:px-6 py-3 sm:py-4">
+                      <div className="space-y-1 sm:space-y-2 text-xs sm:text-sm">
+                        <div className="flex items-start">
+                          <FaCalendarAlt className="mr-1.5 sm:mr-2 mt-0.5 text-gray-400 dark:text-gray-500 flex-shrink-0" size={10} />
+                          <span className="text-gray-900 dark:text-white break-words">
+                            {formatDateToLong(item["Hari dan Tanggal Les"])}
+                          </span>
+                        </div>
+                        <div className="flex items-start">
+                          <FaClock className="mr-1.5 sm:mr-2 mt-0.5 text-gray-400 dark:text-gray-500 flex-shrink-0" size={10} />
+                          <span className="text-gray-600 dark:text-gray-300 break-words">
+                            {formatTimeToHHMM(String(item["Jam Kegiatan Les"]))}
+                          </span>
+                        </div>
+                        <div className="flex items-start hidden sm:block">
+                          <FaHashtag className="mr-2 mt-0.5 text-gray-400 dark:text-gray-500 flex-shrink-0" size={10} />
+                          <span className="text-xs text-gray-500 dark:text-gray-400 break-words">
+                            {item["Timestamp"]}
+                          </span>
+                        </div>
                       </div>
                     </td>
                   </tr>
                 ))
             ) : (
-              <tr><td colSpan="3" className="text-center py-8 text-gray-500 dark:text-slate-400">
-                  <div>
-                    <p className="mb-2">{getEmptyMessage()}</p>
+              <tr>
+                <td colSpan="3" className="px-3 sm:px-6 py-8 sm:py-12 text-center">
+                  <div className="max-w-xs sm:max-w-sm mx-auto">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 dark:bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                      <svg className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <p className="text-gray-900 dark:text-white font-medium mb-2 text-sm sm:text-base">{getEmptyMessage()}</p>
                     {searchQuery && (
-                      <p className="text-sm text-slate-400">
+                      <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                         Search is performed across tutor names, student names, dates, times, and timestamps.
                       </p>
                     )}
                   </div>
-                </td></tr>
+                </td>
+              </tr>
             )}
           </tbody>
         </table>
@@ -108,7 +161,7 @@ export const PresenceTable = ({
       
       {/* Show pagination if we have more than one page */}
       {pagination && pagination.totalPages > 1 && (
-        <div className="mt-4">
+        <div className="border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-700/30 px-3 sm:px-6 py-3 sm:py-4">
           <Pagination
             currentPage={currentPage}
             totalPages={pagination.totalPages}

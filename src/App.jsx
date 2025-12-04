@@ -90,98 +90,118 @@ function App() {
   }
 
   return (
-    <div className="bg-gray-100 w-full min-h-screen flex flex-col dark:bg-slate-900 dark:text-slate-100">
-      <div className="bg-white max-w-2xl w-full min-h-screen mx-auto dark:bg-slate-800">
-        <Header 
-          isFetching={isFetching || isRefreshing} 
-          handleRefresh={handleRefresh}
-          selectedYear={activeSelectedYear}
-          searchQuery={activeSearchQuery}
-        />
-
-        {/* StatusBar temporarily hidden */}
-        {/* {!debouncedSearchQuery && (
-          <StatusBar 
-            totalItems={pagination?.totalItems}
-            filteredItems={data?.length}
-            cached={cached}
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-slate-900 dark:to-slate-800 transition-colors duration-300">
+      <div className="w-full px-3 py-4 sm:px-4 sm:py-6">
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-soft overflow-hidden animate-fade-in">
+          <Header
+            isFetching={isFetching || isRefreshing}
+            handleRefresh={handleRefresh}
             selectedYear={activeSelectedYear}
             searchQuery={activeSearchQuery}
-            pagination={pagination}
-          />
-        )} */}
-
-        <div className="p-5">
-          <YearFilter
-            selectedYear={selectedYear}
-            onYearChange={handleYearChange}
-          />
-          
-          <SearchBar 
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-            handleSearch={handleSearch}
-            isLoading={isFetching || isRefreshing}
           />
 
-          {/* Initial State / No Search Yet */}
-          {isInitialLoading && (
-            <div className="text-center py-10 px-4 text-gray-500">
-              <h2 className="text-lg font-semibold mb-2">Welcome!</h2>
-              <p>Please select a year or use the search bar to find attendance data.</p>
-            </div>
-          )}
+          {/* StatusBar temporarily hidden */}
+          {/* {!debouncedSearchQuery && (
+            <StatusBar
+              totalItems={pagination?.totalItems}
+              filteredItems={data?.length}
+              cached={cached}
+              selectedYear={activeSelectedYear}
+              searchQuery={activeSearchQuery}
+              pagination={pagination}
+            />
+          )} */}
 
-          {/* Search Results Summary (only show if a search or filter is active) */}
-          {(activeSearchQuery || activeSelectedYear) && !isInitialLoading && (
-            <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                  <span className="text-blue-800 font-medium">
-                    {activeSearchQuery ? 'Search Results' : `Data for ${activeSelectedYear}`}
-                  </span>
-                  {isFetching && (
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
-                  )}
-                </div>
-                <div className="text-blue-700 text-sm">
-                  {isFetching ? (
-                    'Loading...'
-                  ) :
-                  pagination ? (
-                    <>
-                      {pagination.totalItems} results found
-                      {pagination.totalPages > 1 && (
-                        <span className="ml-2">
-                          (Page {currentPage} of {pagination.totalPages})
-                        </span>
-                      )}
-                    </>
-                  ) : (
-                    data?.length || 0
-                  )}
-                </div>
-              </div>
+          <div className="p-4 sm:p-6">
+            <div className="space-y-4 sm:space-y-6">
+              {/* <YearFilter
+                selectedYear={selectedYear}
+                onYearChange={handleYearChange}
+              /> */}
               
-              {!isFetching && data?.length === 0 && activeSearchQuery && (
-                <div className="mt-2 text-blue-700 text-sm">
-                  No matches found for "{activeSearchQuery}". Try different keywords or check your spelling.
+              <SearchBar
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                handleSearch={handleSearch}
+                isLoading={isFetching || isRefreshing}
+              />
+
+              {/* Initial State / No Search Yet */}
+              {isInitialLoading && (
+                <div className="text-center py-12 sm:py-16 px-4">
+                  <div className="max-w-sm mx-auto">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                      <svg className="w-8 h-8 sm:w-10 sm:h-10 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      </svg>
+                    </div>
+                    <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white mb-2 sm:mb-3">Welcome to Presence Data</h2>
+                    <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">Select a year or use the search bar to explore attendance records.</p>
+                  </div>
                 </div>
               )}
-            </div>
-          )}
 
-          {/* Only render table if it's not the initial state */}
-          {!isInitialLoading && (
-            <PresenceTable 
-              data={data} 
-              isLoading={isFetching}
-              pagination={pagination}
-              onPageChange={handlePageChange}
-              currentPage={currentPage}
-              searchQuery={activeSearchQuery}
-            />
-          )}
+              {/* Search Results Summary (only show if a search or filter is active) */}
+              {(activeSearchQuery || activeSelectedYear) && !isInitialLoading && (
+                <div className="bg-gradient-to-r from-primary-50 to-blue-50 dark:from-primary-900/20 dark:to-blue-900/20 border border-primary-200 dark:border-primary-800 rounded-lg sm:rounded-xl p-3 sm:p-4 animate-slide-up">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
+                    <div className="flex items-center space-x-2 sm:space-x-3">
+                      <div className="w-2 h-2 bg-primary-500 rounded-full animate-pulse-slow"></div>
+                      <span className="text-primary-800 dark:text-primary-200 font-semibold text-sm sm:text-base">
+                        {activeSearchQuery ? 'Search Results' : `Data for ${activeSelectedYear}`}
+                      </span>
+                      {isFetching && (
+                        <div className="animate-spin rounded-full h-4 w-4 border-2 border-primary-500 border-t-transparent"></div>
+                      )}
+                    </div>
+                    <div className="text-primary-700 dark:text-primary-300 text-xs sm:text-sm font-medium">
+                      {isFetching ? (
+                        <span className="flex items-center">
+                          <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-primary-600" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          Loading...
+                        </span>
+                      ) :
+                      pagination ? (
+                        <>
+                          {pagination.totalItems.toLocaleString()} results
+                          {pagination.totalPages > 1 && (
+                            <span className="ml-2 text-primary-600 dark:text-primary-400">
+                              • Page {currentPage} of {pagination.totalPages}
+                            </span>
+                          )}
+                        </>
+                      ) : (
+                        `${data?.length || 0} results`
+                      )}
+                    </div>
+                  </div>
+                  
+                  {!isFetching && data?.length === 0 && activeSearchQuery && (
+                    <div className="mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-primary-200 dark:border-primary-700">
+                      <p className="text-primary-700 dark:text-primary-300 text-xs sm:text-sm">
+                        No matches found for "<span className="font-medium">{activeSearchQuery}</span>". Try different keywords or check your spelling.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Only render table if it's not the initial state */}
+              {!isInitialLoading && (
+                <PresenceTable
+                  data={data}
+                  isLoading={isFetching}
+                  pagination={pagination}
+                  onPageChange={handlePageChange}
+                  currentPage={currentPage}
+                  searchQuery={activeSearchQuery}
+                />
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>

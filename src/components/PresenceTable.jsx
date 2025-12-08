@@ -67,11 +67,19 @@ export const PresenceTable = ({
             {isLoading ? ([...Array(10)].map((_, index) => (
                 <tr key={index} className="animate-pulse">
                   <td className="px-3 sm:px-6 py-3 sm:py-4">
-                    <div className="h-3 sm:h-4 bg-gray-200 dark:bg-slate-600 rounded w-3/4"></div>
+                    <div className="flex items-start">
+                      <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gray-200 dark:bg-slate-600 rounded-full mr-2 sm:mr-3 flex-shrink-0"></div>
+                      <div className="flex flex-col space-y-2">
+                        <div className="h-3 sm:h-4 bg-gray-200 dark:bg-slate-600 rounded w-3/4"></div>
+                        <div className="h-2 sm:h-3 bg-gray-200 dark:bg-slate-600 rounded w-1/2"></div>
+                      </div>
+                    </div>
                   </td>
                   <td className="px-3 sm:px-6 py-3 sm:py-4">
-                    <div className="h-3 sm:h-4 bg-gray-200 dark:bg-slate-600 rounded w-2/3 mb-2"></div>
-                    <div className="h-2 sm:h-3 bg-gray-200 dark:bg-slate-600 rounded w-1/3"></div>
+                    <div className="space-y-1 sm:space-y-2">
+                      <div className="h-3 sm:h-4 bg-gray-200 dark:bg-slate-600 rounded w-2/3 mb-2"></div>
+                      <div className="h-2 sm:h-3 bg-gray-200 dark:bg-slate-600 rounded w-1/3"></div>
+                    </div>
                   </td>
                   <td className="px-3 sm:px-6 py-3 sm:py-4">
                     <div className="space-y-1 sm:space-y-2">
@@ -86,15 +94,22 @@ export const PresenceTable = ({
                 data.map((item, index) => (
                   <tr key={`${item["Timestamp"]}-${index}`} className="hover:bg-gray-50 dark:hover:bg-slate-700/30 transition-colors duration-150">
                     <td className="px-3 sm:px-6 py-3 sm:py-4">
-                      <div className="flex items-center">
+                      <div className="flex items-start">
                         <div className="w-6 h-6 sm:w-8 sm:h-8 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center mr-2 sm:mr-3 flex-shrink-0">
                           <span className="text-xs font-medium text-primary-600 dark:text-primary-400">
                             {item["Nama Tentor"]?.charAt(0)?.toUpperCase() || 'T'}
                           </span>
                         </div>
-                        <span className="font-medium text-gray-900 dark:text-white break-words text-sm sm:text-base">
-                          {item["Nama Tentor"]}
-                        </span>
+                        <div className="flex flex-col">
+                          <span className="font-medium text-gray-900 dark:text-white break-words text-sm sm:text-base">
+                            {item["Nama Tentor"]}
+                          </span>
+                          {item["Email Address"] && (
+                            <span className="text-xs text-gray-500 dark:text-gray-400 break-words mt-1">
+                              {item["Email Address"]}
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </td>
                     <td className="px-3 sm:px-6 py-3 sm:py-4">
@@ -176,6 +191,7 @@ export const PresenceTable = ({
 PresenceTable.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape({
     "Nama Tentor": PropTypes.string,
+    "Email Address": PropTypes.string,
     "Nama Siswa": PropTypes.string,
     "Hari dan Tanggal Les": PropTypes.string,
     "Jam Kegiatan Les": PropTypes.string,

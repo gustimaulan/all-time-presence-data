@@ -35,7 +35,7 @@ export const PresenceTable = ({
   }
 
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-lg sm:rounded-xl shadow-card overflow-hidden animate-fade-in">
+    <div className="bg-white dark:bg-slate-800 rounded-lg sm:rounded-xl shadow-card overflow-hidden">
       <div id="tableTop" className="overflow-x-auto custom-scrollbar">
         <table className="w-full min-w-full">
           <thead className="bg-gray-50 dark:bg-slate-700/50 border-b border-gray-200 dark:border-slate-600">
@@ -65,27 +65,27 @@ export const PresenceTable = ({
           </thead>
           <tbody className="bg-white dark:bg-slate-800 divide-y divide-gray-200 dark:divide-slate-700">
             {isLoading ? ([...Array(10)].map((_, index) => (
-                <tr key={index} className="animate-pulse">
+                <tr key={index}>
                   <td className="px-3 sm:px-6 py-3 sm:py-4">
                     <div className="flex items-start">
-                      <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gray-200 dark:bg-slate-600 rounded-full mr-2 sm:mr-3 flex-shrink-0"></div>
-                      <div className="flex flex-col space-y-2">
-                        <div className="h-3 sm:h-4 bg-gray-200 dark:bg-slate-600 rounded w-3/4"></div>
-                        <div className="h-2 sm:h-3 bg-gray-200 dark:bg-slate-600 rounded w-1/2"></div>
+                      <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gray-300 dark:bg-slate-600 rounded-full mr-2 sm:mr-3 flex-shrink-0 animate-pulse"></div>
+                      <div className="flex-1 space-y-1 sm:space-y-2 min-w-0">
+                        <div className="h-3 sm:h-4 bg-gray-300 dark:bg-slate-600 rounded w-full animate-pulse">&nbsp;</div>
+                        <div className="h-2 sm:h-3 bg-gray-300 dark:bg-slate-600 rounded w-4/5 animate-pulse">&nbsp;</div>
                       </div>
                     </div>
                   </td>
                   <td className="px-3 sm:px-6 py-3 sm:py-4">
                     <div className="space-y-1 sm:space-y-2">
-                      <div className="h-3 sm:h-4 bg-gray-200 dark:bg-slate-600 rounded w-2/3 mb-2"></div>
-                      <div className="h-2 sm:h-3 bg-gray-200 dark:bg-slate-600 rounded w-1/3"></div>
+                      <div className="h-3 sm:h-4 bg-gray-300 dark:bg-slate-600 rounded w-4/5 animate-pulse">&nbsp;</div>
+                      <div className="h-2 sm:h-3 bg-gray-300 dark:bg-slate-600 rounded w-2/5 animate-pulse">&nbsp;</div>
                     </div>
                   </td>
                   <td className="px-3 sm:px-6 py-3 sm:py-4">
                     <div className="space-y-1 sm:space-y-2">
-                      <div className="h-3 sm:h-4 bg-gray-200 dark:bg-slate-600 rounded w-4/5"></div>
-                      <div className="h-2 sm:h-3 bg-gray-200 dark:bg-slate-600 rounded w-3/5"></div>
-                      <div className="h-2 sm:h-3 bg-gray-200 dark:bg-slate-600 rounded w-2/5 hidden sm:block"></div>
+                      <div className="h-3 sm:h-4 bg-gray-300 dark:bg-slate-600 rounded w-4/5 animate-pulse">&nbsp;</div>
+                      <div className="h-2 sm:h-3 bg-gray-300 dark:bg-slate-600 rounded w-3/5 animate-pulse">&nbsp;</div>
+                      <div className="h-2 sm:h-3 bg-gray-300 dark:bg-slate-600 rounded w-2/5 hidden sm:block animate-pulse">&nbsp;</div>
                     </div>
                   </td>
                 </tr>

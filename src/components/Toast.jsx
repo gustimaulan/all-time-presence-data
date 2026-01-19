@@ -13,21 +13,21 @@ const Toast = ({ message, type = 'info', onClose, duration = 3000 }) => {
   }, [duration, onClose])
 
   const bgColor = {
-    success: 'bg-green-500',
-    error: 'bg-red-500',
-    info: 'bg-blue-500',
-    warning: 'bg-yellow-500'
+    success: 'bg-neo-green text-black',
+    error: 'bg-neo-red text-black',
+    info: 'bg-neo-blue text-black',
+    warning: 'bg-neo-yellow text-black'
   }[type]
 
   return (
-    <div className={`fixed bottom-4 right-4 ${bgColor} text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 min-w-[200px] max-w-md`}>
-      <span className="flex-1">{message}</span>
+    <div className={`fixed bottom-6 right-6 ${bgColor} border-neo border-black shadow-neo rounded-neo px-6 py-4 flex items-center gap-4 min-w-[280px] max-w-md z-50 animate-slide-up`}>
+      <span className="flex-1 font-black uppercase tracking-tight text-sm">{message}</span>
       <button
         onClick={onClose}
-        className="hover:opacity-80 transition-opacity"
+        className="border-2 border-black bg-white text-black p-1 hover:bg-black hover:text-white transition-all shadow-neo-sm rounded-neo-sm"
         aria-label="Close notification"
       >
-        <X size={18} />
+        <X size={16} strokeWidth={3} />
       </button>
     </div>
   )

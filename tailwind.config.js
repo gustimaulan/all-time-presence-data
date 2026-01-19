@@ -21,31 +21,16 @@ export default {
           900: '#1e3a8a',
           950: '#172554',
         },
-        gray: {
-          50: '#f9fafb',
-          100: '#f3f4f6',
-          200: '#e5e7eb',
-          300: '#d1d5db',
-          400: '#9ca3af',
-          500: '#6b7280',
-          600: '#4b5563',
-          700: '#374151',
-          800: '#1f2937',
-          900: '#111827',
-          950: '#030712',
-        },
-        slate: {
-          50: '#f8fafc',
-          100: '#f1f5f9',
-          200: '#e2e8f0',
-          300: '#cbd5e1',
-          400: '#94a3b8',
-          500: '#64748b',
-          600: '#475569',
-          700: '#334155',
-          800: '#1e293b',
-          900: '#0f172a',
-          950: '#020617',
+        neo: {
+          yellow: '#FEF9C3', // Soft Pastel Yellow
+          pink: '#FCE7F3',   // Soft Pastel Pink
+          blue: '#DBEAFE',   // Soft Pastel Blue
+          green: '#DCFCE7',  // Soft Pastel Green
+          red: '#FEE2E2',    // Soft Pastel Red
+          orange: '#FFEDD5', // Soft Pastel Orange
+          purple: '#F3E8FF', // Soft Pastel Purple
+          bg: '#FCFCFC',     // Cleaner, softer background
+          card: '#FFFFFF',
         }
       },
       spacing: {
@@ -54,14 +39,23 @@ export default {
         '128': '32rem',
       },
       borderRadius: {
+        'neo': '4px',       // Added subtle rounding for "smoother" feel
+        'neo-sm': '2px',
         'xl': '0.75rem',
         '2xl': '1rem',
         '3xl': '1.5rem',
       },
       boxShadow: {
+        'neo': '3px 3px 0px 0px rgba(0, 0, 0, 1)',    // Reduced offset
+        'neo-lg': '6px 6px 0px 0px rgba(0, 0, 0, 1)', // Reduced offset
+        'neo-sm': '1.5px 1.5px 0px 0px rgba(0, 0, 0, 1)',
         'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
         'medium': '0 4px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
         'card': '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+      },
+      borderWidth: {
+        'neo': '2px',      // Thinner borders
+        'neo-sm': '1px',   // Thinner borders
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',

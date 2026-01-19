@@ -6,109 +6,86 @@
   html {
     scroll-behavior: smooth;
   }
-  
+
   body {
+    @apply bg-neo-bg text-black;
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 }
 
 @layer components {
+
   /* Custom scrollbar */
   .custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
   }
-  
+
   .custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
+    @apply bg-white border-l-neo-sm border-black;
   }
-  
+
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 3px;
+    @apply bg-black;
   }
-  
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
+
+  /* Neobrutalism Card */
+  .neo-card {
+    @apply bg-white border-neo border-black shadow-neo rounded-neo p-4 md:p-6;
+    transition: transform 0.2s ease, shadow 0.2s ease;
   }
-  
-  .dark .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #475569;
+
+  /* Neobrutalism Button */
+  .neo-btn {
+    @apply bg-neo-yellow border-neo-sm border-black shadow-neo-sm rounded-neo px-4 py-2 font-bold transition-all hover:bg-white hover:shadow-neo active:translate-x-[0.5px] active:translate-y-[0.5px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed;
   }
-  
-  .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #64748b;
+
+  /* Neobrutalism Input */
+  .neo-input {
+    @apply bg-white border-neo-sm border-black shadow-neo-sm rounded-neo px-4 py-2 focus:outline-none focus:ring-2 focus:ring-neo-yellow transition-all;
   }
-  
-  /* Glass morphism effect */
-  .glass {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+
+  /* Neobrutalism Badge */
+  .neo-badge {
+    @apply inline-block px-2 py-0.5 border-neo-sm border-black rounded-neo-sm font-bold text-xs uppercase tracking-wider;
   }
-  
-  .dark .glass {
-    background: rgba(30, 41, 59, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
+
   /* Focus styles */
   .focus-ring {
-    @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-slate-800;
-  }
-  
-  /* Card hover effect */
-  .card-hover {
-    @apply transition-all duration-200 hover:shadow-medium hover:-translate-y-0.5;
-  }
-  
-  /* Button hover effect */
-  .btn-hover {
-    @apply transition-all duration-200 hover:scale-105 active:scale-95;
-  }
-  
-  /* Input focus effect */
-  .input-focus {
-    @apply transition-all duration-200 focus:ring-2 focus:ring-primary-500 focus:border-primary-500;
-  }
-  
-  /* Link hover effect */
-  .link-hover {
-    @apply transition-colors duration-200 hover:text-primary-600 dark:hover:text-primary-400;
+    @apply focus:outline-none focus:ring-4 focus:ring-black;
   }
 }
 
 @layer utilities {
-  /* Text gradient */
-  .text-gradient {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+
+  /* Text gradient (simplified for neo) */
+  .text-neo-outline {
+    -webkit-text-stroke: 1.5px black;
+    color: white;
   }
-  
+
   /* Safe area padding for mobile */
   .safe-area-top {
     padding-top: env(safe-area-inset-top);
   }
-  
+
   .safe-area-bottom {
     padding-bottom: env(safe-area-inset-bottom);
   }
-  
+
   /* Hide scrollbar but keep functionality */
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-  
+
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
-  
+
   /* Prevent zoom on input focus for mobile */
   @supports (-webkit-touch-callout: none) {
+
     input[type="text"],
     input[type="email"],
     input[type="password"],
@@ -120,17 +97,9 @@
       -webkit-tap-highlight-color: transparent;
     }
   }
-  
+
   /* Prevent zoom on double-tap for mobile */
   * {
     touch-action: manipulation;
-  }
-  
-  /* Fix viewport scaling for mobile */
-  @viewport {
-    width: device-width;
-    initial-scale: 1;
-    maximum-scale: 1;
-    user-scalable: no;
   }
 }

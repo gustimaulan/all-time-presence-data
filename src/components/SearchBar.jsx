@@ -85,12 +85,12 @@ export const SearchBar = ({
     <form onSubmit={(e) => {
       e.preventDefault()
       handleSearch(searchQuery)
-    }} className="space-y-3">
+    }} className="space-y-4">
       <div className="relative">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-3 gap-3">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 gap-4">
           <div className="relative flex-1">
-            <div className="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none">
-              <Search className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <Search className="h-5 w-5 text-black" strokeWidth={3} />
             </div>
             <input
               type="text"
@@ -103,33 +103,33 @@ export const SearchBar = ({
                   setShowSuggestions(false)
                 }, 150) // Delay to allow click on suggestion
               }}
-              className="block w-full pl-9 sm:pl-12 pr-9 sm:pr-12 py-2.5 sm:py-3 border border-gray-200 dark:border-slate-600 rounded-lg sm:rounded-xl bg-white dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 shadow-sm text-sm sm:text-base"
-              placeholder="Search by tutor name, student name..."
+              className="neo-input w-full pl-12 pr-12 text-black placeholder-black/50"
+              placeholder="Search by tutor or student name..."
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={handleClear}
-                className="absolute inset-y-0 right-0 pr-3 sm:pr-4 flex items-center"
+                className="absolute inset-y-0 right-0 pr-4 flex items-center"
               >
-                <div className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-slate-600 text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-200 transition-colors duration-200">
-                  <X size={14} className="sm:w-4 sm:h-4" />
+                <div className="p-1 border-2 border-black bg-white hover:bg-neo-red text-black transition-colors rounded-sm">
+                  <X size={16} strokeWidth={3} />
                 </div>
               </button>
             )}
 
             {showSuggestions && suggestions.length > 0 && (
-              <ul className="absolute z-20 w-full mt-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-600 rounded-lg sm:rounded-xl shadow-medium overflow-hidden animate-slide-up">
+              <ul className="absolute z-20 w-full mt-2 bg-white border-neo border-black shadow-neo overflow-hidden">
                 <div className="max-h-48 sm:max-h-64 overflow-y-auto custom-scrollbar">
                   {suggestions.map((suggestion, index) => (
                     <li
                       key={index}
                       onMouseDown={() => handleSelectSuggestion(suggestion)}
-                      className="px-3 sm:px-4 py-2.5 sm:py-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors duration-150 border-b border-gray-100 dark:border-slate-700 last:border-b-0"
+                      className="px-4 py-3 cursor-pointer hover:bg-neo-yellow transition-colors border-b-2 border-black last:border-b-0"
                     >
                       <div className="flex items-center justify-between">
-                        <span className="text-gray-900 dark:text-white font-medium text-sm sm:text-base truncate">{suggestion.name}</span>
-                        <span className="text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-slate-600 text-gray-600 dark:text-gray-300 flex-shrink-0">
+                        <span className="text-black font-black text-sm sm:text-base truncate uppercase tracking-tight">{suggestion.name}</span>
+                        <span className="neo-badge bg-white text-black uppercase scale-75 origin-right">
                           {suggestion.type}
                         </span>
                       </div>
@@ -142,20 +142,20 @@ export const SearchBar = ({
 
           <button
             type="submit"
-            className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-sm hover:shadow-md disabled:hover:shadow-sm text-sm sm:text-base"
+            className="neo-btn bg-neo-green text-black disabled:opacity-50 disabled:bg-gray-200"
             disabled={isLoading || !searchQuery.trim()}
           >
             {isLoading ? (
               <div className="flex items-center justify-center">
-                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-black" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="black" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="black" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                Searching
+                Syncing
               </div>
             ) : (
-              <div className="flex items-center justify-center">
-                <Search size={16} className="sm:w-4 sm:h-4 mr-2" />
+              <div className="flex items-center justify-center uppercase tracking-tighter">
+                <Search size={18} className="mr-2 stroke-[3px]" />
                 Search
               </div>
             )}
@@ -164,11 +164,11 @@ export const SearchBar = ({
       </div>
 
       {searchQuery && (
-        <div className="flex items-center space-x-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400 animate-slide-up">
-          <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <div className="flex items-center space-x-2 text-xs sm:text-sm text-black font-bold uppercase">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <span className="truncate">Searching for: <span className="font-medium text-gray-900 dark:text-white">"{searchQuery}"</span></span>
+          <span className="truncate">Searching: <span className="bg-neo-yellow px-1 border-neo-sm border-black">"{searchQuery}"</span></span>
         </div>
       )}
     </form>

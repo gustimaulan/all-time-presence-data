@@ -3,7 +3,7 @@ compatibility_date = "2023-12-01"
 pages_build_output_dir = "dist"
 
 [env.production]
-vars = { API_BASE_URL = "https://presensi.sigmath.net/api" }
+# Add API_BASE_URL in Cloudflare Dashboard Variables for security
 
 [env.preview]
-vars = { API_BASE_URL = "https://presensi.sigmath.net/api" }
+# Add API_BASE_URL in Cloudflare Dashboard Variables for security

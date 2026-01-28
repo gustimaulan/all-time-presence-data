@@ -12,23 +12,23 @@ export const Pagination = ({
         <button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="neo-btn bg-neo-yellow text-black disabled:bg-gray-200"
+          className="notion-btn border border-notion-border bg-white text-notion-text disabled:opacity-30"
         >
           Previous
         </button>
         <button
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="neo-btn bg-neo-yellow text-black disabled:bg-gray-200"
+          className="notion-btn border border-notion-border bg-white text-notion-text disabled:opacity-30"
         >
           Next
         </button>
       </div>
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div>
-          <p className="text-sm font-black uppercase tracking-tight text-black">
-            Page <span className="bg-neo-yellow px-1 border-neo-sm border-black">{currentPage}</span> OF{' '}
-            <span className="bg-neo-blue text-black px-1 border-neo-sm border-black">{totalPages}</span>
+          <p className="text-sm font-medium text-notion-gray">
+            Page <span className="text-notion-text font-bold">{currentPage}</span> of{' '}
+            <span className="text-notion-text font-bold">{totalPages}</span>
           </p>
         </div>
         <div>
@@ -36,25 +36,47 @@ export const Pagination = ({
             <button
               onClick={() => onPageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="neo-btn bg-white text-black p-2 disabled:bg-gray-200"
+              className="notion-btn-ghost p-1 disabled:opacity-30"
             >
               <span className="sr-only">Previous</span>
-              <ChevronLeft className="h-5 w-5 stroke-[3px]" />
+              <ChevronLeft className="h-4 w-4" />
             </button>
 
-            <div className="neo-badge bg-black text-white px-4 py-2 uppercase tracking-widest flex items-center space-x-2">
-              <span className="font-black">{currentPage}</span>
-              <span className="text-white/50">/</span>
-              <span className="font-bold">{totalPages}</span>
+            <div className="flex items-center space-x-1">
+              {[...Array(Math.min(5, totalPages))].map((_, i) => {
+                let pageNum;
+                if (totalPages <= 5) {
+                  pageNum = i + 1;
+                } else if (currentPage <= 3) {
+                  pageNum = i + 1;
+                } else if (currentPage >= totalPages - 2) {
+                  pageNum = totalPages - 4 + i;
+                } else {
+                  pageNum = currentPage - 2 + i;
+                }
+
+                return (
+                  <button
+                    key={pageNum}
+                    onClick={() => onPageChange(pageNum)}
+                    className={`w-7 h-7 flex items-center justify-center rounded-notion text-sm font-medium transition-colors ${currentPage === pageNum
+                      ? 'bg-notion-blue text-white'
+                      : 'text-notion-text hover:bg-notion-hover'
+                      }`}
+                  >
+                    {pageNum}
+                  </button>
+                );
+              })}
             </div>
 
             <button
               onClick={() => onPageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="neo-btn bg-white text-black p-2 disabled:bg-gray-200"
+              className="notion-btn-ghost p-1 disabled:opacity-30"
             >
               <span className="sr-only">Next</span>
-              <ChevronRight className="h-5 w-5 stroke-[3px]" />
+              <ChevronRight className="h-4 w-4" />
             </button>
           </nav>
         </div>

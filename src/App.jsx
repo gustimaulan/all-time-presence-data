@@ -90,9 +90,9 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-neo-bg transition-colors duration-300">
-      <div className="w-full px-3 py-4 sm:px-4 sm:py-6">
-        <div className="bg-white border-neo border-black shadow-neo-lg overflow-hidden animate-fade-in">
+    <div className="min-h-screen bg-notion-bg text-notion-text transition-colors duration-300">
+      <div className="max-w-5xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+        <div className="space-y-8 animate-fade-in">
           <Header
             isFetching={isFetching || isRefreshing}
             handleRefresh={handleRefresh}
@@ -100,74 +100,70 @@ function App() {
             searchQuery={activeSearchQuery}
           />
 
-          <div className="p-4 sm:p-8">
-            <div className="space-y-6 sm:space-y-8">
-              <SearchBar
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-                handleSearch={handleSearch}
-                isLoading={isFetching || isRefreshing}
-              />
+          <div className="space-y-6">
+            <SearchBar
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              handleSearch={handleSearch}
+              isLoading={isFetching || isRefreshing}
+            />
 
-              {/* Initial State / No Search Yet */}
-              {isInitialLoading && (
-                <div className="text-center py-12 sm:py-20 px-4 neo-card bg-white border-dashed">
-                  <div className="max-w-md mx-auto">
-                    <div className="w-20 h-20 bg-neo-yellow border-neo-sm border-black shadow-neo flex items-center justify-center mx-auto mb-6">
-                      <svg className="w-10 h-10 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            {/* Initial State / No Search Yet */}
+            {isInitialLoading && (
+              <div className="text-center py-20 px-4 rounded-notion-md border border-dashed border-notion-border bg-notion-gray-light/30">
+                <div className="max-w-md mx-auto">
+                  <div className="w-16 h-16 bg-notion-hover rounded-notion-md flex items-center justify-center mx-auto mb-6">
+                    <svg className="w-8 h-8 text-notion-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </div>
+                  <h2 className="text-2xl font-semibold text-notion-text mb-2">Welcome to Data Sync</h2>
+                  <p className="text-notion-gray font-medium">Select a year or search to explore records</p>
+                </div>
+              </div>
+            )}
+
+            {/* Search Results Summary */}
+            {(activeSearchQuery || activeSelectedYear) && !isInitialLoading && (
+              <div className="bg-notion-hover/50 border border-notion-border rounded-notion p-3 animate-slide-up flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-notion-blue rounded-full"></div>
+                  <span className="font-semibold text-sm text-notion-text">
+                    {activeSearchQuery ? `"${activeSearchQuery}"` : activeSelectedYear}
+                  </span>
+                </div>
+                <div className="text-notion-gray font-medium text-xs uppercase tracking-tight">
+                  {isFetching ? (
+                    <span className="flex items-center">
+                      <svg className="animate-spin -ml-1 mr-1.5 h-3.5 w-3.5 text-notion-blue" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
-                    </div>
-                    <h2 className="text-2xl sm:text-3xl font-black text-black uppercase tracking-tighter mb-4">Welcome to Data Sync</h2>
-                    <p className="text-sm sm:text-base font-bold text-black/70 uppercase">Select a year or search to explore records</p>
-                  </div>
+                      Syncing...
+                    </span>
+                  ) :
+                    pagination ? (
+                      <>
+                        {pagination.totalItems.toLocaleString()} records • page {currentPage} of {pagination.totalPages}
+                      </>
+                    ) : (
+                      `${data?.length || 0} records`
+                    )}
                 </div>
-              )}
+              </div>
+            )}
 
-              {/* Search Results Summary */}
-              {(activeSearchQuery || activeSelectedYear) && !isInitialLoading && (
-                <div className="bg-neo-blue border-neo-sm border-black shadow-neo-sm rounded-neo p-4 animate-slide-up text-black">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-3 h-3 bg-neo-yellow border-2 border-black animate-pulse rounded-full"></div>
-                      <span className="font-black uppercase tracking-widest text-sm sm:text-base">
-                        {activeSearchQuery ? `SEARCH: "${activeSearchQuery}"` : `YEAR: ${activeSelectedYear}`}
-                      </span>
-                    </div>
-                    <div className="bg-black text-white px-3 py-1 border-neo-sm border-white font-black text-xs sm:text-sm uppercase tracking-tighter">
-                      {isFetching ? (
-                        <span className="flex items-center">
-                          <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-neo-yellow" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
-                          SYNCING DATA
-                        </span>
-                      ) :
-                        pagination ? (
-                          <>
-                            {pagination.totalItems.toLocaleString()} RECORDS • PAGE {currentPage} / {pagination.totalPages}
-                          </>
-                        ) : (
-                          `${data?.length || 0} RECORDS`
-                        )}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Only render table if it's not the initial state */}
-              {!isInitialLoading && (
-                <PresenceTable
-                  data={data}
-                  isLoading={isFetching}
-                  pagination={pagination}
-                  onPageChange={handlePageChange}
-                  currentPage={currentPage}
-                  searchQuery={activeSearchQuery}
-                />
-              )}
-            </div>
+            {/* Only render table if it's not the initial state */}
+            {!isInitialLoading && (
+              <PresenceTable
+                data={data}
+                isLoading={isFetching}
+                pagination={pagination}
+                onPageChange={handlePageChange}
+                currentPage={currentPage}
+                searchQuery={activeSearchQuery}
+              />
+            )}
           </div>
         </div>
       </div>

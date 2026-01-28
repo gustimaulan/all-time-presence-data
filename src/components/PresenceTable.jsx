@@ -21,123 +21,123 @@ export const PresenceTable = ({
   }
 
   const getDurationBadgeColor = (duration) => {
-    if (!duration) return 'bg-neo-blue text-black'
+    if (!duration) return 'bg-notion-blue/10 text-notion-blue'
 
     const numDuration = parseInt(duration)
-    if (isNaN(numDuration)) return 'bg-neo-blue text-black'
+    if (isNaN(numDuration)) return 'bg-notion-blue/10 text-notion-blue'
 
-    if (numDuration <= 30) return 'bg-neo-blue text-black'
-    if (numDuration <= 60) return 'bg-neo-green text-black'
-    if (numDuration <= 90) return 'bg-neo-yellow text-black'
-    if (numDuration <= 120) return 'bg-neo-orange text-black'
-    if (numDuration <= 150) return 'bg-neo-pink text-black'
-    return 'bg-neo-red text-black'
+    if (numDuration <= 30) return 'bg-notion-blue/10 text-notion-blue'
+    if (numDuration <= 60) return 'bg-notion-green/20 text-notion-text'
+    if (numDuration <= 90) return 'bg-notion-yellow/40 text-notion-text'
+    if (numDuration <= 120) return 'bg-notion-orange/40 text-notion-text'
+    if (numDuration <= 150) return 'bg-notion-pink/40 text-notion-text'
+    return 'bg-notion-red/20 text-notion-text'
   }
 
   return (
-    <div className="neo-card p-0 md:p-0 overflow-hidden">
+    <div className="notion-card overflow-hidden">
       <div id="tableTop" className="overflow-x-auto custom-scrollbar">
         <table className="w-full min-w-full border-collapse">
-          <thead className="bg-black border-b-neo border-black">
+          <thead className="bg-notion-gray-light border-b border-notion-border">
             <tr>
-              <th className="px-3 sm:px-6 py-4 text-left text-xs sm:text-sm font-black text-white uppercase tracking-widest border-r-2 border-white/20">
+              <th className="px-4 py-3 text-left text-xs font-semibold text-notion-gray uppercase tracking-wider">
                 <div className="flex items-center space-x-2">
-                  <FaUser size={14} />
+                  <FaUser className="opacity-50" size={12} />
                   <span>Tutor</span>
                 </div>
               </th>
-              <th className="px-3 sm:px-6 py-4 text-left text-xs sm:text-sm font-black text-white uppercase tracking-widest border-r-2 border-white/20">
+              <th className="px-4 py-3 text-left text-xs font-semibold text-notion-gray uppercase tracking-wider">
                 <div className="flex items-center space-x-2">
-                  <FaUser size={14} />
+                  <FaUser className="opacity-50" size={12} />
                   <span>Student</span>
                 </div>
               </th>
-              <th className="px-3 sm:px-6 py-4 text-left text-xs sm:text-sm font-black text-white uppercase tracking-widest">
+              <th className="px-4 py-3 text-left text-xs font-semibold text-notion-gray uppercase tracking-wider">
                 <div className="flex items-center space-x-2">
-                  <FaCalendarAlt size={14} />
+                  <FaCalendarAlt className="opacity-50" size={12} />
                   <span>Schedule</span>
                 </div>
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y-2 divide-black">
+          <tbody className="divide-y divide-notion-border">
             {isLoading ? ([...Array(10)].map((_, index) => (
               <tr key={index} className="bg-white">
-                <td className="px-3 sm:px-6 py-4 border-r-2 border-black/10">
+                <td className="px-4 py-4">
                   <div className="flex items-start">
-                    <div className="w-8 h-8 bg-black/10 border-2 border-black mr-3 flex-shrink-0 animate-pulse"></div>
+                    <div className="w-6 h-6 rounded-notion bg-notion-hover animate-pulse mr-3 flex-shrink-0"></div>
                     <div className="flex-1 space-y-2">
-                      <div className="h-4 bg-black/10 border-2 border-black w-full animate-pulse">&nbsp;</div>
-                      <div className="h-3 bg-black/5 border-2 border-black/20 w-4/5 animate-pulse">&nbsp;</div>
+                      <div className="h-3 bg-notion-hover rounded w-3/4 animate-pulse">&nbsp;</div>
+                      <div className="h-2 bg-notion-hover/50 rounded w-1/2 animate-pulse">&nbsp;</div>
                     </div>
                   </div>
                 </td>
-                <td className="px-3 sm:px-6 py-4 border-r-2 border-black/10">
+                <td className="px-4 py-4">
                   <div className="space-y-2">
-                    <div className="h-4 bg-black/10 border-2 border-black w-4/5 animate-pulse">&nbsp;</div>
-                    <div className="h-3 bg-black/5 border-2 border-black/20 w-2/5 animate-pulse">&nbsp;</div>
+                    <div className="h-3 bg-notion-hover rounded w-3/4 animate-pulse">&nbsp;</div>
+                    <div className="h-2 bg-notion-hover/50 rounded w-1/4 animate-pulse">&nbsp;</div>
                   </div>
                 </td>
-                <td className="px-3 sm:px-6 py-4">
+                <td className="px-4 py-4">
                   <div className="space-y-2">
-                    <div className="h-4 bg-black/10 border-2 border-black w-4/5 animate-pulse">&nbsp;</div>
-                    <div className="h-3 bg-black/5 border-2 border-black/20 w-3/5 animate-pulse">&nbsp;</div>
+                    <div className="h-3 bg-notion-hover rounded w-1/2 animate-pulse">&nbsp;</div>
+                    <div className="h-2 bg-notion-hover/50 rounded w-1/3 animate-pulse">&nbsp;</div>
                   </div>
                 </td>
               </tr>
             )))
               : data.length > 0 ? (
                 data.map((item, index) => (
-                  <tr key={`${item["Timestamp"]}-${index}`} className="hover:bg-neo-yellow/10 transition-colors bg-white">
-                    <td className="px-3 sm:px-6 py-4 border-r-2 border-black/10">
+                  <tr key={`${item["Timestamp"]}-${index}`} className="hover:bg-notion-hover/50 transition-colors bg-white group">
+                    <td className="px-4 py-4">
                       <div className="flex items-start">
-                        <div className="w-8 h-8 bg-neo-yellow border-2 border-black flex items-center justify-center mr-3 flex-shrink-0 shadow-neo-sm">
-                          <span className="text-xs font-black text-black">
+                        <div className="w-6 h-6 rounded-notion bg-notion-blue/10 flex items-center justify-center mr-3 flex-shrink-0 text-notion-blue">
+                          <span className="text-[10px] font-bold">
                             {item["Nama Tentor"]?.charAt(0)?.toUpperCase() || 'T'}
                           </span>
                         </div>
                         <div className="flex flex-col">
-                          <span className="font-black text-black break-words text-sm sm:text-base uppercase tracking-tight">
+                          <span className="font-medium text-notion-text text-sm transition-colors group-hover:text-notion-blue">
                             {item["Nama Tentor"]}
                           </span>
                           {item["Email Address"] && (
-                            <span className="text-[10px] font-bold text-black border-neo-sm border-black bg-white px-1 mt-1 break-words self-start">
+                            <span className="text-[10px] text-notion-gray mt-0.5 break-all">
                               {maskEmail(item["Email Address"])}
                             </span>
                           )}
                         </div>
                       </div>
                     </td>
-                    <td className="px-3 sm:px-6 py-4 border-r-2 border-black/10">
-                      <div className="space-y-2">
-                        <div className="font-black text-black break-words text-sm sm:text-base uppercase tracking-tight">
+                    <td className="px-4 py-4">
+                      <div className="space-y-1.5">
+                        <div className="font-medium text-notion-text text-sm">
                           {item["Nama Siswa"]}
                         </div>
                         {item["Durasi Les"] && (
                           <div className="inline-flex">
-                            <span className={`neo-badge ${getDurationBadgeColor(item["Durasi Les"])} uppercase`}>
-                              {item["Durasi Les"]} MIN
+                            <span className={`notion-badge ${getDurationBadgeColor(item["Durasi Les"])} px-1.5 py-px text-[10px] font-bold uppercase`}>
+                              {item["Durasi Les"]} min
                             </span>
                           </div>
                         )}
                       </div>
                     </td>
-                    <td className="px-3 sm:px-6 py-4">
-                      <div className="space-y-2 text-xs sm:text-sm font-bold">
-                        <div className="flex items-start">
-                          <FaCalendarAlt className="mr-2 mt-0.5 text-black flex-shrink-0" size={12} />
-                          <span className="text-black uppercase">
+                    <td className="px-4 py-4">
+                      <div className="space-y-1 text-xs text-notion-gray">
+                        <div className="flex items-center text-notion-text font-medium">
+                          <FaCalendarAlt className="mr-2 opacity-40" size={10} />
+                          <span>
                             {formatDateToLong(item["Hari dan Tanggal Les"])}
                           </span>
                         </div>
-                        <div className="flex items-start">
-                          <FaClock className="mr-2 mt-0.5 text-black flex-shrink-0" size={12} />
-                          <span className="text-black border-b-2 border-dashed border-black">
+                        <div className="flex items-center">
+                          <FaClock className="mr-2 opacity-40" size={10} />
+                          <span>
                             {formatTimeToHHMM(String(item["Jam Kegiatan Les"]))}
                           </span>
                         </div>
-                        <div className="flex items-start pt-1">
-                          <span className="text-[9px] font-black bg-black text-white px-1 uppercase letter-tracking-tighter">
+                        <div className="pt-1">
+                          <span className="text-[9px] font-mono bg-notion-gray-light text-notion-gray px-1 rounded">
                             ID: {item["Timestamp"]}
                           </span>
                         </div>
@@ -147,16 +147,16 @@ export const PresenceTable = ({
                 ))
               ) : (
                 <tr>
-                  <td colSpan="3" className="px-3 sm:px-6 py-12 text-center bg-white">
-                    <div className="max-w-xs sm:max-w-sm mx-auto">
-                      <div className="neo-card bg-neo-yellow inline-block mb-4 p-4">
-                        <svg className="w-10 h-10 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <td colSpan="3" className="px-4 py-20 text-center bg-white">
+                    <div className="max-w-xs mx-auto">
+                      <div className="w-12 h-12 bg-notion-gray-light rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg className="w-6 h-6 text-notion-gray opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                       </div>
-                      <p className="text-black font-black uppercase tracking-tight mb-2 text-sm sm:text-base">{getEmptyMessage()}</p>
+                      <p className="text-notion-text font-medium mb-1">{getEmptyMessage()}</p>
                       {searchQuery && (
-                        <p className="text-xs font-bold text-black/60 uppercase">
+                        <p className="text-xs text-notion-gray">
                           Search is global across all data fields
                         </p>
                       )}
@@ -169,7 +169,7 @@ export const PresenceTable = ({
       </div>
 
       {pagination && pagination.totalPages > 1 && (
-        <div className="border-t-neo border-black bg-white px-3 sm:px-6 py-4">
+        <div className="border-t border-notion-border bg-notion-gray-light/30 px-4 py-3">
           <Pagination
             currentPage={currentPage}
             totalPages={pagination.totalPages}

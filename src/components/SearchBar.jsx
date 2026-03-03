@@ -16,30 +16,19 @@ export const SearchBar = ({
   const [isInputFocused, setIsInputFocused] = useState(false)
   const debouncedSearchQuery = useDebounce(searchQuery, 100) // 100ms debounce
 
-  // Fetch all tutors
-  const { data: allTutorsData } = useQuery({
-    queryKey: ['allTutors'],
+  // Fetch all suggestions (tutors and students) in one call
+  const { data: suggestionsData } = useQuery({
+    queryKey: ['allSuggestions'],
     queryFn: async () => {
-      const res = await axios.get(`/tutors`)
-      return Object.values(res.data.names || {})
+      const res = await axios.get(`/suggestions`)
+      return res.data
     },
-    staleTime: Infinity, // Data doesn't change often, so cache indefinitely
+    staleTime: Infinity,
     cacheTime: Infinity,
   })
 
-  // Fetch all students
-  const { data: allStudentsData } = useQuery({
-    queryKey: ['allStudents'],
-    queryFn: async () => {
-      const res = await axios.get(`/students`)
-      return Object.values(res.data.names || {})
-    },
-    staleTime: Infinity, // Data doesn't change often, so cache indefinitely
-    cacheTime: Infinity,
-  })
-
-  const allTutors = useMemo(() => allTutorsData || [], [allTutorsData])
-  const allStudents = useMemo(() => allStudentsData || [], [allStudentsData])
+  const allTutors = useMemo(() => suggestionsData?.tutors || [], [suggestionsData])
+  const allStudents = useMemo(() => suggestionsData?.students || [], [suggestionsData])
 
   useEffect(() => {
     if (debouncedSearchQuery.trim() === '') {
